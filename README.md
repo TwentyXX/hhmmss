@@ -38,3 +38,7 @@ fn main() {
 		assert_eq!(&time_duration.mmssxxx(), "23:45.678");
 }
 ```
+
+# Acknowledgements
+
+Special thanks to Tianyi Shi.
