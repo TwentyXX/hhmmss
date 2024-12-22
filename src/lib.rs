@@ -41,9 +41,7 @@ pub trait Hhmmss {
 	fn fmt_ss(&self) -> String { self.get_sign() + &self.unsigned_ss() }
 	fn fmt_xxx(&self) -> String { self.get_sign() + &self.unsigned_xxx() }
 
-	/// Pretty-prints a chrono::Duration in the form `MM:SS`
 	fn unsigned_mmss(&self) -> String { format!("{}:{}", self.unsigned_mm(), self.unsigned_ss()) }
-	/// Pretty-prints a chrono::Duration in the form `MM:SS.xxx`
 	fn unsigned_mmssxxx(&self) -> String {
 		format!(
 			"{}:{}.{}",
@@ -52,15 +50,9 @@ pub trait Hhmmss {
 			self.unsigned_xxx()
 		)
 	}
-	/// Pretty-print chrono::Duration in the format
-	/// `M:SS` if the minute value is one digit,
-	/// otherwise in the format `MM:SS`.
 	fn unsigned_mss(&self) -> String {
 		format!("{}:{}", self.part_of_minutes_abs(), self.unsigned_ss())
 	}
-	/// Pretty-print chrono::Duration in the format
-	/// `M:SS.xxx` if the minute value is one digit,
-	/// otherwise in the format `MM:SS.xxx`.
 	fn unsigned_mssxxx(&self) -> String {
 		format!(
 			"{}:{}.{}",
@@ -69,7 +61,6 @@ pub trait Hhmmss {
 			self.unsigned_xxx(),
 		)
 	}
-	/// Pretty-prints a chrono::Duration in the form `HH:MM:SS.xxx`
 	fn unsigned_hhmmss(&self) -> String {
 		format!(
 			"{}:{}:{}",
@@ -79,7 +70,6 @@ pub trait Hhmmss {
 		)
 	}
 
-	/// Pretty-prints a chrono::Duration in the form `HH:MM:SS.xxx`
 	fn unsigned_hhmmssxxx(&self) -> String {
 		format!(
 			"{}:{}:{}.{}",
