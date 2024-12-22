@@ -18,7 +18,7 @@ hhmmss = "0.1"
 Then:
 
 ```rust
-use hhmmss::Hhmmss;
+use hhmmss::Hhmmss as _;
 
 fn main() {
 		let std_duration = std::time::Duration::new((1 * 60 + 23) * 60 + 45, 678_901_234);
@@ -36,6 +36,49 @@ fn main() {
 		assert_eq!(&time_duration.hhmmssxxx(), "01:23:45.678");
 		assert_eq!(&time_duration.mmss(), "23:45");
 		assert_eq!(&time_duration.mmssxxx(), "23:45.678");
+}
+```
+
+## All Features
+```rust
+use hhmmss::Hhmmss as _;
+
+fn main() {
+			assert_eq!(sample_val.part_of_hours(), 1);
+			assert_eq!(sample_val.part_of_minutes(), 23);
+			assert_eq!(sample_val.part_of_seconds(), 45);
+			assert_eq!(sample_val.part_of_milliseconds(), 678);
+			assert_eq!(sample_val.part_of_microseconds(), 901);
+			assert_eq!(sample_val.part_of_nanoseconds(), 234);
+			assert_eq!(sample_val.part_of_hours_abs(), 1);
+			assert_eq!(sample_val.part_of_minutes_abs(), 23);
+			assert_eq!(sample_val.part_of_seconds_abs(), 45);
+			assert_eq!(sample_val.part_of_milliseconds_abs(), 678);
+			assert_eq!(sample_val.part_of_microseconds_abs(), 901);
+			assert_eq!(sample_val.part_of_nanoseconds_abs(), 234);
+
+			assert_eq!(&sample_val.fmt_hh(), "01");
+			assert_eq!(&sample_val.fmt_mm(), "23");
+			assert_eq!(&sample_val.fmt_ss(), "45");
+			assert_eq!(&sample_val.mss(), "23:45");
+			assert_eq!(&sample_val.mmss(), "23:45");
+			assert_eq!(&sample_val.hmmss(), "1:23:45");
+			assert_eq!(&sample_val.hhmmss(), "01:23:45");
+			assert_eq!(&sample_val.mssxxx(), "23:45.678");
+			assert_eq!(&sample_val.mmssxxx(), "23:45.678");
+			assert_eq!(&sample_val.hmmssxxx(), "1:23:45.678");
+			assert_eq!(&sample_val.hhmmssxxx(), "01:23:45.678");
+			assert_eq!(&sample_val.unsigned_hh(), "01");
+			assert_eq!(&sample_val.unsigned_mm(), "23");
+			assert_eq!(&sample_val.unsigned_ss(), "45");
+			assert_eq!(&sample_val.unsigned_mss(), "23:45");
+			assert_eq!(&sample_val.unsigned_mmss(), "23:45");
+			assert_eq!(&sample_val.unsigned_hmmss(), "1:23:45");
+			assert_eq!(&sample_val.unsigned_hhmmss(), "01:23:45");
+			assert_eq!(&sample_val.unsigned_mssxxx(), "23:45.678");
+			assert_eq!(&sample_val.unsigned_mmssxxx(), "23:45.678");
+			assert_eq!(&sample_val.unsigned_hmmssxxx(), "1:23:45.678");
+			assert_eq!(&sample_val.unsigned_hhmmssxxx(), "01:23:45.678");
 }
 ```
 
