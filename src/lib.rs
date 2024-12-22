@@ -5,6 +5,46 @@ pub trait Hhmmss {
 		let (s, _ms) = self.s_ms();
 		s2hhmmss(s)
 	}
+
+	#[test]
+	fn test_hmmss() {
+		let std_duration = std::time::Duration::new((1 * 60 + 23) * 60 + 45, 0);
+		assert_eq!(&std_duration.hmmss(), "1:23:45");
+		let chrono_duration = chrono::Duration::from_std(std_duration).unwrap();
+		assert_eq!(&chrono_duration.hmmss(), "1:23:45");
+		let time_duration = time::Duration::from_std(std_duration).unwrap();
+		assert_eq!(&time_duration.hmmss(), "1:23:45");
+	}
+
+	#[test]
+	fn test_hmmssxxx() {
+		let std_duration = std::time::Duration::new((1 * 60 + 23) * 60 + 45, 678_901_234);
+		assert_eq!(&std_duration.hmmssxxx(), "1:23:45.678");
+		let chrono_duration = chrono::Duration::from_std(std_duration).unwrap();
+		assert_eq!(&chrono_duration.hmmssxxx(), "1:23:45.678");
+		let time_duration = time::Duration::from_std(std_duration).unwrap();
+		assert_eq!(&time_duration.hmmssxxx(), "1:23:45.678");
+	}
+
+	#[test]
+	fn test_mss() {
+		let std_duration = std::time::Duration::new((1 * 60 + 23) * 60 + 45, 0);
+		assert_eq!(&std_duration.mss(), "23:45");
+		let chrono_duration = chrono::Duration::from_std(std_duration).unwrap();
+		assert_eq!(&chrono_duration.mss(), "23:45");
+		let time_duration = time::Duration::from_std(std_duration).unwrap();
+		assert_eq!(&time_duration.mss(), "23:45");
+	}
+
+	#[test]
+	fn test_mssxxx() {
+		let std_duration = std::time::Duration::new((1 * 60 + 23) * 60 + 45, 678_901_234);
+		assert_eq!(&std_duration.mssxxx(), "23:45.678");
+		let chrono_duration = chrono::Duration::from_std(std_duration).unwrap();
+		assert_eq!(&chrono_duration.mssxxx(), "23:45.678");
+		let time_duration = time::Duration::from_std(std_duration).unwrap();
+		assert_eq!(&time_duration.mssxxx(), "23:45.678");
+	}
 	/// Pretty-prints a chrono::Duration in the form `HH:MM:SS.xxx`
 	fn hhmmssxxx(&self) -> String {
 		let (s, ms) = self.s_ms();
