@@ -12,6 +12,7 @@ pub trait Hhmmss {
 
 	/// Returns the sign of the duration as a string.
 	/// "-" for negative durations, and an empty string for non-negative durations.
+	/// The output is either "-" or "".
 	fn get_sign(&self) -> String {
 		if self.is_negative() {
 			"-".to_owned()
@@ -20,53 +21,76 @@ pub trait Hhmmss {
 		}
 	}
 	/// Checks if the duration is negative.
+	/// Returns `true` if negative, otherwise `false`.
 	fn is_negative(&self) -> bool;
 	/// Returns the absolute value of the hours part of the duration.
+	/// The output is in the range [0, ∞).
 	fn part_of_hours_abs(&self) -> u64;
 	/// Returns the absolute value of the minutes part of the duration.
+	/// The output is in the range [0, 59].
 	fn part_of_minutes_abs(&self) -> u64;
 	/// Returns the absolute value of the seconds part of the duration.
+	/// The output is in the range [0, 59].
 	fn part_of_seconds_abs(&self) -> u64;
 	/// Returns the absolute value of the milliseconds part of the duration.
+	/// The output is in the range [0, 999].
 	fn part_of_milliseconds_abs(&self) -> u64;
 	/// Returns the absolute value of the microseconds part of the duration.
+	/// The output is in the range [0, 999].
 	fn part_of_microseconds_abs(&self) -> u64;
 	/// Returns the absolute value of the nanoseconds part of the duration.
+	/// The output is in the range [0, 999].
 	fn part_of_nanoseconds_abs(&self) -> u64;
 	/// Returns the hours part of the duration.
+	/// The output can be negative or positive, depending on the duration.
 	fn part_of_hours(&self) -> i64;
 	/// Returns the minutes part of the duration.
+	/// The output is in the range [-59, 59].
 	fn part_of_minutes(&self) -> i64;
 	/// Returns the seconds part of the duration.
+	/// The output is in the range [-59, 59].
 	fn part_of_seconds(&self) -> i64;
 	/// Returns the milliseconds part of the duration.
+	/// The output is in the range [-999, 999].
 	fn part_of_milliseconds(&self) -> i64;
 	/// Returns the microseconds part of the duration.
+	/// The output is in the range [-999, 999].
 	fn part_of_microseconds(&self) -> i64;
 	/// Returns the nanoseconds part of the duration.
+	/// The output is in the range [-999, 999].
 	fn part_of_nanoseconds(&self) -> i64;
 
 	/// Formats the absolute value of the hours part as a two-digit string.
+	/// The output is in the format "HH".
 	fn unsigned_hh(&self) -> String { format!("{:02}", self.part_of_hours_abs()) }
 	/// Formats the absolute value of the minutes part as a two-digit string.
+	/// The output is in the format "MM".
 	fn unsigned_mm(&self) -> String { format!("{:02}", self.part_of_minutes_abs()) }
 	/// Formats the absolute value of the seconds part as a two-digit string.
+	/// The output is in the format "SS".
 	fn unsigned_ss(&self) -> String { format!("{:02}", self.part_of_seconds_abs()) }
 	/// Formats the absolute value of the milliseconds part as a three-digit string.
+	/// The output is in the format "xxx".
 	fn unsigned_xxx(&self) -> String { format!("{:03}", self.part_of_milliseconds_abs()) }
 
 	/// Formats the hours part with a sign.
+	/// The output is in the format "-HH" or "HH".
 	fn fmt_hh(&self) -> String { self.get_sign() + &self.unsigned_hh() }
 	/// Formats the minutes part with a sign.
+	/// The output is in the format "-MM" or "MM".
 	fn fmt_mm(&self) -> String { self.get_sign() + &self.unsigned_mm() }
 	/// Formats the seconds part with a sign.
+	/// The output is in the format "-SS" or "SS".
 	fn fmt_ss(&self) -> String { self.get_sign() + &self.unsigned_ss() }
 	/// Formats the milliseconds part with a sign.
+	/// The output is in the format "-xxx" or "xxx".
 	fn fmt_xxx(&self) -> String { self.get_sign() + &self.unsigned_xxx() }
 
 	/// Formats the absolute value of the duration as "MM:SS".
+	/// The output is in the format "MM:SS".
 	fn unsigned_mmss(&self) -> String { format!("{}:{}", self.unsigned_mm(), self.unsigned_ss()) }
 	/// Formats the absolute value of the duration as "MM:SS.xxx".
+	/// The output is in the format "MM:SS.xxx".
 	fn unsigned_mmssxxx(&self) -> String {
 		format!(
 			"{}:{}.{}",
@@ -76,10 +100,12 @@ pub trait Hhmmss {
 		)
 	}
 	/// Formats the absolute value of the duration as "M:SS".
+	/// The output is in the format "M:SS".
 	fn unsigned_mss(&self) -> String {
 		format!("{}:{}", self.part_of_minutes_abs(), self.unsigned_ss())
 	}
 	/// Formats the absolute value of the duration as "M:SS.xxx".
+	/// The output is in the format "M:SS.xxx".
 	fn unsigned_mssxxx(&self) -> String {
 		format!(
 			"{}:{}.{}",
@@ -89,6 +115,7 @@ pub trait Hhmmss {
 		)
 	}
 	/// Formats the absolute value of the duration as "HH:MM:SS".
+	/// The output is in the format "HH:MM:SS".
 	fn unsigned_hhmmss(&self) -> String {
 		format!(
 			"{}:{}:{}",
@@ -99,6 +126,7 @@ pub trait Hhmmss {
 	}
 
 	/// Formats the absolute value of the duration as "HH:MM:SS.xxx".
+	/// The output is in the format "HH:MM:SS.xxx".
 	fn unsigned_hhmmssxxx(&self) -> String {
 		format!(
 			"{}:{}:{}.{}",
@@ -109,6 +137,7 @@ pub trait Hhmmss {
 		)
 	}
 	/// Formats the absolute value of the duration as "H:MM:SS".
+	/// The output is in the format "H:MM:SS".
 	fn unsigned_hmmss(&self) -> String {
 		format!(
 			"{}:{}:{}",
@@ -118,6 +147,7 @@ pub trait Hhmmss {
 		)
 	}
 	/// Formats the absolute value of the duration as "H:MM:SS.xxx".
+	/// The output is in the format "H:MM:SS.xxx".
 	fn unsigned_hmmssxxx(&self) -> String {
 		format!(
 			"{}:{}:{}.{}",
@@ -128,20 +158,28 @@ pub trait Hhmmss {
 		)
 	}
 	/// Formats the duration as "MM:SS" with a sign.
+	/// The output is in the format "-MM:SS" or "MM:SS".
 	fn mmss(&self) -> String { self.get_sign() + &self.unsigned_mmss() }
 	/// Formats the duration as "MM:SS.xxx" with a sign.
+	/// The output is in the format "-MM:SS.xxx" or "MM:SS.xxx".
 	fn mmssxxx(&self) -> String { self.get_sign() + &self.unsigned_mmssxxx() }
 	/// Formats the duration as "M:SS" with a sign.
+	/// The output is in the format "-M:SS" or "M:SS".
 	fn mss(&self) -> String { self.get_sign() + &self.unsigned_mss() }
 	/// Formats the duration as "M:SS.xxx" with a sign.
+	/// The output is in the format "-M:SS.xxx" or "M:SS.xxx".
 	fn mssxxx(&self) -> String { self.get_sign() + &self.unsigned_mssxxx() }
 	/// Formats the duration as "HH:MM:SS" with a sign.
+	/// The output is in the format "-HH:MM:SS" or "HH:MM:SS".
 	fn hhmmss(&self) -> String { self.get_sign() + &self.unsigned_hhmmss() }
 	/// Formats the duration as "HH:MM:SS.xxx" with a sign.
+	/// The output is in the format "-HH:MM:SS.xxx" or "HH:MM:SS.xxx".
 	fn hhmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hhmmssxxx() }
 	/// Formats the duration as "H:MM:SS" with a sign.
+	/// The output is in the format "-H:MM:SS" or "H:MM:SS".
 	fn hmmss(&self) -> String { self.get_sign() + &self.unsigned_hmmss() }
 	/// Formats the duration as "H:MM:SS.xxx" with a sign.
+	/// The output is in the format "-H:MM:SS.xxx" or "H:MM:SS.xxx".
 	fn hmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hmmssxxx() }
 }
 
