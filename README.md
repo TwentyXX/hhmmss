@@ -21,20 +21,20 @@ Then:
 use hhmmss::Hhmmss;
 
 fn main() {
-		let std_duration = std::time::Duration::new(3661, 534_000_000);
-		assert_eq!(&std_duration.hhmmss(), "01:01:01");
-		assert_eq!(&std_duration.hhmmssxxx(), "01:01:01.534");
-		assert_eq!(&std_duration.mmss(), "01:01");
-		assert_eq!(&std_duration.mmssxxx(), "01:01.534");
+		let std_duration = std::time::Duration::new((1 * 60 + 23) * 60 + 45, 678_901_234);
+		assert_eq!(&std_duration.hhmmss(), "01:23:45");
+		assert_eq!(&std_duration.hhmmssxxx(), "01:23:45.678");
+		assert_eq!(&std_duration.mmss(), "23:45");
+		assert_eq!(&std_duration.mmssxxx(), "23:45.678");
 		let chrono_duration = chrono::Duration::from_std(std_duration).unwrap();
-		assert_eq!(&chrono_duration.hhmmss(), "01:01:01");
-		assert_eq!(&chrono_duration.hhmmssxxx(), "01:01:01.534");
-		assert_eq!(&chrono_duration.mmss(), "01:01");
-		assert_eq!(&chrono_duration.mmssxxx(), "01:01.534");
+		assert_eq!(&chrono_duration.hhmmss(), "01:23:45");
+		assert_eq!(&chrono_duration.hhmmssxxx(), "01:23:45.678");
+		assert_eq!(&chrono_duration.mmss(), "23:45");
+		assert_eq!(&chrono_duration.mmssxxx(), "23:45.678");
 		let time_duration = time::Duration::from_std(std_duration).unwrap();
-		assert_eq!(&time_duration.hhmmss(), "01:01:01");
-		assert_eq!(&time_duration.hhmmssxxx(), "01:01:01.534");
-		assert_eq!(&time_duration.mmss(), "01:01");
-		assert_eq!(&time_duration.mmssxxx(), "01:01.534");
+		assert_eq!(&time_duration.hhmmss(), "01:23:45");
+		assert_eq!(&time_duration.hhmmssxxx(), "01:23:45.678");
+		assert_eq!(&time_duration.mmss(), "23:45");
+		assert_eq!(&time_duration.mmssxxx(), "23:45.678");
 }
 ```
