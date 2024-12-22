@@ -8,23 +8,7 @@ pub trait Hhmmss {
 	/// Pretty-prints a chrono::Duration in the form `HH:MM:SS.xxx`
 	fn hhmmssxxx(&self) -> String {
 		let (s, ms) = self.s_ms();
-		let mut neg = false;
-		let (mut s, mut ms) = (s, ms);
-		if s < 0 {
-			neg = true;
-			s = -s;
-			ms = -ms;
-		}
-		let (h, s) = (s / 3600, s % 3600);
-		let (m, s) = (s / 60, s % 60);
-		format!(
-			"{}{}:{:02}:{:02}.{:03}",
-			if neg { "-" } else { "" },
-			if h < 10 { format!("{}", h) } else { format!("{:02}", h) },
-			m,
-			s,
-			ms
-		)
+		format_duration_hhmmssxxx(s, ms)
 	}
 	/// Pretty-print chrono::Duration in the format
 	/// `H:MM:SS` if the hour value is one digit,
@@ -48,22 +32,7 @@ pub trait Hhmmss {
 	/// Pretty-prints a chrono::Duration in the form `MM:SS.xxx`
 	fn mmssxxx(&self) -> String {
 		let (s, ms) = self.s_ms();
-		let mut neg = false;
-		let (mut s, mut ms) = (s, ms);
-		if s < 0 {
-			neg = true;
-			s = -s;
-			ms = -ms;
-		}
-		let (_h, s) = (s / 3600, s % 3600);
-		let (m, s) = (s / 60, s % 60);
-		format!(
-			"{}{}:{:02}.{:03}",
-			if neg { "-" } else { "" },
-			if m < 10 { format!("{}", m) } else { format!("{:02}", m) },
-			s,
-			ms
-		)
+		format_duration_mmssxxx(s, ms)
 	}
 	/// Pretty-print chrono::Duration in the format
 	/// `M:SS` if the minute value is one digit,
@@ -103,6 +72,29 @@ impl Hhmmss for time::Duration {
 		let ms = self.whole_milliseconds() as i64 - 1000 * s;
 		(s, ms)
 	}
+}
+
+fn format_duration_hhmmssxxx(s: i64, ms: i64) -> String {
+	let (neg, h, m, s, ms) = s2tuple(s, ms);
+	format!(
+		"{}{}:{:02}:{:02}.{:03}",
+		if neg { "-" } else { "" },
+		if h < 10 { format!("{}", h) } else { format!("{:02}", h) },
+		m,
+		s,
+		ms
+	)
+}
+
+fn format_duration_mmssxxx(s: i64, ms: i64) -> String {
+	let (neg, _h, m, s, ms) = s2tuple(s, ms);
+	format!(
+		"{}{}:{:02}.{:03}",
+		if neg { "-" } else { "" },
+		if m < 10 { format!("{}", m) } else { format!("{:02}", m) },
+		s,
+		ms
+	)
 }
 
 fn s2hhmmss(s: i64) -> String {
