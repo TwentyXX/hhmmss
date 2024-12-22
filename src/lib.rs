@@ -1,29 +1,29 @@
 pub trait Hhmmss {
-    fn sms(&self) -> (i64, i64);
+    fn s_ms(&self) -> (i64, i64);
     /// Pretty-prints a chrono::Duration in the form `HH:MM:SS.xxx`
     fn hhmmss(&self) -> String {
-        let (s, ms) = self.sms();
+        let (s, _ms) = self.s_ms();
         s2hhmmss(s)
     }
     /// Pretty-prints a chrono::Duration in the form `HH:MM:SS.xxx`
     fn hhmmssxxx(&self) -> String {
-        let (s, ms) = self.sms();
+        let (s, ms) = self.s_ms();
         sms2hhmmsxxx(s, ms)
     }
     /// Pretty-prints a chrono::Duration in the form `MM:SS`
     fn mmss(&self) -> String {
-        let (s, ms) = self.sms();
+        let (s, _ms) = self.s_ms();
         s2mmss(s)
     }
     /// Pretty-prints a chrono::Duration in the form `MM:SS.xxx`
     fn mmssxxx(&self) -> String {
-        let (s, ms) = self.sms();
+        let (s, ms) = self.s_ms();
         sms2mmsxxx(s, ms)
     }
 }
 
 impl Hhmmss for chrono::Duration {
-    fn sms(&self) -> (i64, i64) {
+    fn s_ms(&self) -> (i64, i64) {
         let s = self.num_seconds();
         let ms = self.num_milliseconds() - 1000 * s;
         (s, ms)
@@ -31,7 +31,7 @@ impl Hhmmss for chrono::Duration {
 }
 
 impl Hhmmss for std::time::Duration {
-    fn sms(&self) -> (i64, i64) {
+    fn s_ms(&self) -> (i64, i64) {
         let s = self.as_secs();
         let ms = self.subsec_millis();
         (s as i64, ms as i64)
@@ -39,7 +39,7 @@ impl Hhmmss for std::time::Duration {
 }
 
 impl Hhmmss for time::Duration {
-    fn sms(&self) -> (i64, i64) {
+    fn s_ms(&self) -> (i64, i64) {
         let s = self.whole_seconds();
         let ms = self.whole_milliseconds() as i64 - 1000 * s;
         (s, ms)
@@ -85,7 +85,7 @@ fn s2mmss(s: i64) -> String {
         neg = true;
         s = -s;
     }
-    let (h, s) = (s / 3600, s % 3600);
+    let (_h, s) = (s / 3600, s % 3600);
     let (m, s) = (s / 60, s % 60);
     format!("{}{:02}:{:02}", if neg { "-" } else { "" }, m, s)
 }
@@ -98,7 +98,7 @@ fn sms2mmsxxx(s: i64, ms: i64) -> String {
         s = -s;
         ms = -ms;
     }
-    let (h, s) = (s / 3600, s % 3600);
+    let (_h, s) = (s / 3600, s % 3600);
     let (m, s) = (s / 60, s % 60);
     format!(
         "{}{:02}:{:02}.{:03}",
