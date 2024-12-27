@@ -20,6 +20,7 @@ pub trait Hhmmss {
 			"".to_owned()
 		}
 	}
+
 	/// Checks if the duration is negative.
 	/// Returns `true` if negative, otherwise `false`.
 	fn is_negative(&self) -> bool;
@@ -454,6 +455,42 @@ mod tests {
 			assert_eq!(&sample_val.unsigned_hhmmssxxx(), "01:23:45.678");
 
 			assert_eq!(&sample_val.get_sign(), "");
+		}
+	}
+	
+	#[test]
+	fn test_smart_hhmmss() {
+		let test_cases = vec![
+			(std::time::Duration::new(0, 0), "0"),
+			(std::time::Duration::new(1, 0), "1s"),
+			(std::time::Duration::new(60, 0), "1:00"),
+			(std::time::Duration::new(3600, 0), "1:00:00"),
+			(std::time::Duration::new(3661, 0), "1:01:01"),
+			(std::time::Duration::new(0, 1_000_000), "about 0"),
+			(std::time::Duration::new(0, 1_000_001), "about 0"),
+			(std::time::Duration::new(0, 1_000_000_000), "1s"),
+			(std::time::Duration::new(0, 1_500_000_000), "about 1.50s"),
+			(std::time::Duration::new(0, 1_678_901_234), "about 1.67s"),
+		];
+
+		for (duration, expected) in test_cases {
+			assert_eq!(duration.smart_hhmmss(), expected);
+		}
+
+		let negative_test_cases = vec![
+			(chrono::Duration::seconds(-1), "-1s"),
+			(chrono::Duration::minutes(-1), "-1:00"),
+			(chrono::Duration::hours(-1), "-1:00:00"),
+			(chrono::Duration::seconds(-3661), "-1:01:01"),
+			(chrono::Duration::nanoseconds(-1_000_000), "about 0"),
+			(chrono::Duration::nanoseconds(-1_000_001), "about 0"),
+			(chrono::Duration::nanoseconds(-1_000_000_000), "-1s"),
+			(chrono::Duration::nanoseconds(-1_500_000_000), "about -1.50s"),
+			(chrono::Duration::nanoseconds(-1_678_901_234), "about -1.67s"),
+		];
+
+		for (duration, expected) in negative_test_cases {
+			assert_eq!(duration.smart_hhmmss(), expected);
 		}
 	}
 
