@@ -185,9 +185,9 @@ pub trait Hhmmss {
 	fn smart_hhmmss(&self) -> String {
 		if self.part_of_hours() == 0 {
 			if self.part_of_minutes() == 0 {
-				if self.part_of_microseconds() == 0 {
+				if self.part_of_milliseconds() == 0 {
 					if self.part_of_seconds() == 0 {
-						if self.part_of_microseconds() == 0 && self.part_of_nanoseconds() == 0 {
+						if dbg!(self.part_of_microseconds()) == 0 && self.part_of_nanoseconds() == 0 {
 							"0".to_owned()
 						} else {
 							"about 0".to_owned()
