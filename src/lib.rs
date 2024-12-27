@@ -11,8 +11,8 @@ pub trait Hhmmss {
 		* Self::MILLISECONDS_IN_A_SECOND;
 
 	/// Returns the sign of the duration as a string.
-	/// "-" for negative durations, and an empty string for non-negative durations.
-	/// The output is either "-" or "".
+	/// "-" for negative durations, and an empty string for non-negative
+	/// durations. The output is either "-" or "".
 	fn get_sign(&self) -> String {
 		if self.is_negative() {
 			"-".to_owned()
@@ -69,8 +69,8 @@ pub trait Hhmmss {
 	/// Formats the absolute value of the seconds part as a two-digit string.
 	/// The output is in the format "SS".
 	fn unsigned_ss(&self) -> String { format!("{:02}", self.part_of_seconds_abs()) }
-	/// Formats the absolute value of the milliseconds part as a three-digit string.
-	/// The output is in the format "xxx".
+	/// Formats the absolute value of the milliseconds part as a three-digit
+	/// string. The output is in the format "xxx".
 	fn unsigned_xxx(&self) -> String { format!("{:03}", self.part_of_milliseconds_abs()) }
 
 	/// Formats the hours part with a sign.
@@ -181,6 +181,33 @@ pub trait Hhmmss {
 	/// Formats the duration as "H:MM:SS.xxx" with a sign.
 	/// The output is in the format "-H:MM:SS.xxx" or "H:MM:SS.xxx".
 	fn hmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hmmssxxx() }
+	fn smart_hhmmss(&self) -> String {
+		if self.part_of_hours() == 0 {
+			if self.part_of_minutes() == 0 {
+				if self.part_of_microseconds() == 0 {
+					if self.part_of_seconds() == 0 {
+						if self.part_of_microseconds() == 0 && self.part_of_nanoseconds() == 0 {
+							"0".to_owned()
+						} else {
+							"about 0".to_owned()
+						}
+					} else {
+						format!("{}s", self.part_of_seconds())
+					}
+				} else {
+					if self.part_of_microseconds() == 0 && self.part_of_nanoseconds() == 0 {
+						format!("{}.{:02}s", self.part_of_seconds(), self.part_of_milliseconds_abs())
+					} else {
+						format!("about {}.{:02}s", self.part_of_seconds(), self.part_of_milliseconds_abs())
+					}
+				}
+			} else {
+				self.mss()
+			}
+		} else {
+			self.hmmss()
+		}
+	}
 }
 
 impl Hhmmss for chrono::Duration {
@@ -429,4 +456,5 @@ mod tests {
 			assert_eq!(&sample_val.get_sign(), "");
 		}
 	}
+
 }
