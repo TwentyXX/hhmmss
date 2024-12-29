@@ -174,15 +174,15 @@ fn test_fraction_of_seconds() {
 		fn test<T: Hhmmss>(duration: T) {
 			assert_eq!(
 				duration.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
-				"83:45.678"
+				"23:45.678"
 			);
 			assert_eq!(
 				duration.unsigned_mmss_and_fract(FractPartOfDuration::Microseconds),
-				"83:45.678901"
+				"23:45.678901"
 			);
 			assert_eq!(
 				duration.unsigned_mmss_and_fract(FractPartOfDuration::Nanoseconds),
-				"83:45.678901234"
+				"23:45.678901234"
 			);
 		}
 
@@ -196,15 +196,15 @@ fn test_fraction_of_seconds() {
 		fn test2<T: Hhmmss>(duration: T) {
 			assert_eq!(
 				duration.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
-				"83:45.678"
+				"23:45.678"
 			);
 			assert_eq!(
 				duration.unsigned_mmss_and_fract(FractPartOfDuration::Microseconds),
-				"83:45.678901"
+				"23:45.678901"
 			);
 			assert_eq!(
 				duration.unsigned_mmss_and_fract(FractPartOfDuration::Nanoseconds),
-				"83:45.678901234"
+				"23:45.678901234"
 			);
 		}
 	}
