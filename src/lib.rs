@@ -107,14 +107,10 @@ pub trait Hhmmss {
 
 	fn unsigned_mmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
-			"{}:{}{}",
+			"{}:{}.{}",
 			self.unsigned_mm(),
 			self.unsigned_ss(),
-			((self.fract_of_secs_abs() * included.units_per_sec() as f64).floor()
-				/ included.units_per_sec() as f64)
-				.fract()
-				.to_string()
-				.trim_start_matches('0')
+			self.fmt_fract(included)
 		)
 	}
 	/// Formats the absolute value of the duration as "M:SS".
@@ -267,6 +263,13 @@ pub trait Hhmmss {
 			} else {
 				1.0
 			}
+	}
+	fn fmt_fract(&self, included: FractPartOfDuration) -> String {
+		((self.fract_of_secs_abs() * included.units_per_sec() as f64).floor()
+			/ included.units_per_sec() as f64)
+			.fract()
+			.to_string()[2..]
+			.to_string()
 	}
 }
 
