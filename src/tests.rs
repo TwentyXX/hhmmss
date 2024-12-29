@@ -65,8 +65,8 @@ fn test_all_features() {
 		assert_eq!(&d.unsigned_mmssxxx(), "23:45.678");
 		assert_eq!(&d.unsigned_hmmssxxx(), "1:23:45.678");
 		assert_eq!(&d.unsigned_hhmmssxxx(), "01:23:45.678");
-		assert!((d.fract_of_secs_abs() - 0.678901234).abs() < 0.000000001);
-		assert!((d.fract_of_secs() - (-0.678901234)).abs() < 0.000000001);
+		assert_eq!(d.fract_of_secs(), -0.678901234);
+		assert_eq!(d.fract_of_secs_abs(), 0.678901234);
 		assert_eq!(&d.fmt_fract(FractPartOfDuration::Nanoseconds), "678901234");
 		assert_eq!(
 			&d.mss_and_fract(FractPartOfDuration::Milliseconds),
