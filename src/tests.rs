@@ -1,4 +1,4 @@
-use crate::{fract, Hhmmss};
+use crate::{FractPartOfDuration, Hhmmss};
 
 #[test]
 fn test_all_crate_durations() {
@@ -67,15 +67,15 @@ fn test_all_features_old() {
 
 		// Test unsigned_mmss_and_fract with all variants
 		assert_eq!(
-			&minus_one_hour.unsigned_mmss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
 			"23:45.678"
 		);
 		assert_eq!(
-			&minus_one_hour.unsigned_mmss_and_fract(crate::FractPartOfDuration::Microseconds),
+			&minus_one_hour.unsigned_mmss_and_fract(FractPartOfDuration::Microseconds),
 			"23:45.678901"
 		);
 		assert_eq!(
-			&minus_one_hour.unsigned_mmss_and_fract(crate::FractPartOfDuration::Nanoseconds),
+			&minus_one_hour.unsigned_mmss_and_fract(FractPartOfDuration::Nanoseconds),
 			"23:45.678901234"
 		);
 
@@ -120,56 +120,56 @@ fn test_all_features() {
 		assert_eq!(&minus_one_hour.unsigned_mmss(), "23:45");
 		assert_eq!(&minus_one_hour.unsigned_mmssxxx(), "23:45.678");
 		assert_eq!(
-			&minus_one_hour.unsigned_mmss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
 			"23:45.678"
 		);
 		assert_eq!(&minus_one_hour.unsigned_mss(), "23:45");
 		assert_eq!(&minus_one_hour.unsigned_mssxxx(), "23:45.678");
 		assert_eq!(
-			&minus_one_hour.unsigned_mss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.unsigned_mss_and_fract(FractPartOfDuration::Milliseconds),
 			"23:45.678"
 		);
 		assert_eq!(&minus_one_hour.unsigned_hhmmss(), "01:23:45");
 		assert_eq!(&minus_one_hour.unsigned_hhmmssxxx(), "01:23:45.678");
 		assert_eq!(
-			&minus_one_hour.unsigned_hhmmss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.unsigned_hhmmss_and_fract(FractPartOfDuration::Milliseconds),
 			"01:23:45.678"
 		);
 		assert_eq!(&minus_one_hour.unsigned_hmmss(), "1:23:45");
 		assert_eq!(&minus_one_hour.unsigned_hmmssxxx(), "1:23:45.678");
 		assert_eq!(
-			&minus_one_hour.unsigned_hmmss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.unsigned_hmmss_and_fract(FractPartOfDuration::Milliseconds),
 			"1:23:45.678"
 		);
 		assert_eq!(&minus_one_hour.mmss(), "-23:45");
 		assert_eq!(&minus_one_hour.mmssxxx(), "-23:45.678");
 		assert_eq!(
-			&minus_one_hour.mmss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.mmss_and_fract(FractPartOfDuration::Milliseconds),
 			"-23:45.678"
 		);
 		assert_eq!(&minus_one_hour.mss(), "-23:45");
 		assert_eq!(&minus_one_hour.mssxxx(), "-23:45.678");
 		assert_eq!(
-			&minus_one_hour.mss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.mss_and_fract(FractPartOfDuration::Milliseconds),
 			"-23:45.678"
 		);
 		assert_eq!(&minus_one_hour.hhmmss(), "-01:23:45");
 		assert_eq!(&minus_one_hour.hhmmssxxx(), "-01:23:45.678");
 		assert_eq!(
-			&minus_one_hour.hhmmss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.hhmmss_and_fract(FractPartOfDuration::Milliseconds),
 			"-01:23:45.678"
 		);
 		assert_eq!(&minus_one_hour.hmmss(), "-1:23:45");
 		assert_eq!(&minus_one_hour.hmmssxxx(), "-1:23:45.678");
 		assert_eq!(
-			&minus_one_hour.hmmss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			&minus_one_hour.hmmss_and_fract(FractPartOfDuration::Milliseconds),
 			"-1:23:45.678"
 		);
 		assert_eq!(&minus_one_hour.smart_hhmmss(), "about -1:23:45.678");
 		assert!((minus_one_hour.fract_of_secs_abs() - 0.678901234).abs() < 0.000000001);
 		assert!((minus_one_hour.fract_of_secs() - (-0.678901234)).abs() < 0.000000001);
 		assert_eq!(
-			&minus_one_hour.fmt_fract(fract::FractPartOfDuration::Nanoseconds),
+			&minus_one_hour.fmt_fract(FractPartOfDuration::Nanoseconds),
 			"678901234"
 		);
 	}
@@ -271,7 +271,7 @@ fn test_fraction_of_seconds() {
 
 #[test]
 fn test_unsigned_mmss_and_fract() {
-	use crate::FractPartOfDuration;
+	use FractPartOfDuration;
 	let duration = chrono::Duration::seconds((1 * 60 + 23) * 60 + 45)
 		+ chrono::Duration::nanoseconds(678_901_234);
 	test(duration);
