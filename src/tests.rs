@@ -146,15 +146,15 @@ fn test_smart_hhmmss() {
 #[test]
 fn test_fraction_of_seconds() {
 	assert_eq!(
-		std::time::Duration::from_secs_f64(0.0).fraction_of_seconds_abs(),
+		std::time::Duration::from_secs_f64(0.0).fract_of_secs_abs(),
 		0.0
 	);
 	assert_eq!(
-		std::time::Duration::from_secs_f64(0.1).fraction_of_seconds_abs(),
+		std::time::Duration::from_secs_f64(0.1).fract_of_secs_abs(),
 		0.1
 	);
 	assert_eq!(
-		std::time::Duration::from_secs_f64(0.123456789).fraction_of_seconds_abs(),
+		std::time::Duration::from_secs_f64(0.123456789).fract_of_secs_abs(),
 		0.123456789
 	);
 }

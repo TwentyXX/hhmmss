@@ -110,7 +110,7 @@ pub trait Hhmmss {
 			"{}:{}{}",
 			self.unsigned_mm(),
 			self.unsigned_ss(),
-			((self.fraction_of_seconds_abs() * included.units_per_sec() as f64).floor()
+			((self.fract_of_secs_abs() * included.units_per_sec() as f64).floor()
 				/ included.units_per_sec() as f64)
 				.fract()
 				.to_string()
@@ -232,7 +232,7 @@ pub trait Hhmmss {
 					format!(
 						"{}s",
 						self.part_of_seconds() as f64
-							+ (self.fraction_of_seconds() * 1_000.0).floor() / 1_000.0
+							+ (self.fract_of_secs() * 1_000.0).floor() / 1_000.0
 					)
 				} else {
 					self.mssxxx()
@@ -244,7 +244,7 @@ pub trait Hhmmss {
 
 		value.insert_str(
 			0,
-			if (self.fraction_of_seconds() * 1_000.0).fract() == 0.0 {
+			if (self.fract_of_secs() * 1_000.0).fract() == 0.0 {
 				""
 			} else {
 				"about "
@@ -253,15 +253,15 @@ pub trait Hhmmss {
 
 		value
 	}
-	fn fraction_of_seconds_abs(&self) -> f64 {
+	fn fract_of_secs_abs(&self) -> f64 {
 		((self.part_of_nanoseconds_abs() as f64 / Self::NANOSECONDS_IN_A_MICROSECOND as f64
 			+ self.part_of_microseconds_abs() as f64)
 			/ Self::MICROSECONDS_IN_A_MILLISECOND as f64
 			+ self.part_of_milliseconds_abs() as f64)
 			/ Self::MILLISECONDS_IN_A_SECOND as f64
 	}
-	fn fraction_of_seconds(&self) -> f64 {
-		self.fraction_of_seconds_abs()
+	fn fract_of_secs(&self) -> f64 {
+		self.fract_of_secs_abs()
 			* if self.is_negative() {
 				-1.0
 			} else {
