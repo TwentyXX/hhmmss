@@ -25,83 +25,80 @@ fn test_all_features() {
 	let minus_one_hour = time::Duration::new(-((1 * 60 + 23) * 60 + 45), -678_901_234);
 	test(minus_one_hour);
 
-	fn test<T: Hhmmss>(minus_one_hour: T) {
-		assert_eq!(minus_one_hour.get_sign(), "-");
-		assert_eq!(minus_one_hour.is_negative(), true);
-		assert_eq!(minus_one_hour.part_of_hours_abs(), 1);
-		assert_eq!(minus_one_hour.part_of_minutes_abs(), 23);
-		assert_eq!(minus_one_hour.part_of_seconds_abs(), 45);
-		assert_eq!(minus_one_hour.part_of_milliseconds_abs(), 678);
-		assert_eq!(minus_one_hour.part_of_microseconds_abs(), 901);
-		assert_eq!(minus_one_hour.part_of_nanoseconds_abs(), 234);
-		assert_eq!(minus_one_hour.part_of_hours(), -1);
-		assert_eq!(minus_one_hour.part_of_minutes(), -23);
-		assert_eq!(minus_one_hour.part_of_seconds(), -45);
-		assert_eq!(minus_one_hour.part_of_milliseconds(), -678);
-		assert_eq!(minus_one_hour.part_of_microseconds(), -901);
-		assert_eq!(minus_one_hour.part_of_nanoseconds(), -234);
-		assert_eq!(&minus_one_hour.unsigned_hh(), "01");
-		assert_eq!(&minus_one_hour.unsigned_mm(), "23");
-		assert_eq!(&minus_one_hour.unsigned_ss(), "45");
-		assert_eq!(&minus_one_hour.unsigned_xxx(), "678");
-		assert_eq!(&minus_one_hour.fmt_hh(), "-01");
-		assert_eq!(&minus_one_hour.fmt_mm(), "-23");
-		assert_eq!(&minus_one_hour.fmt_ss(), "-45");
-		assert_eq!(&minus_one_hour.fmt_xxx(), "-678");
-		assert_eq!(&minus_one_hour.unsigned_mmss(), "23:45");
-		assert_eq!(&minus_one_hour.unsigned_mmssxxx(), "23:45.678");
+	fn test<T: Hhmmss>(d: T) {
+		assert_eq!(&d.smart_hhmmss(), "about -1:23:45.678");
+		assert_eq!(d.get_sign(), "-");
+		assert_eq!(d.is_negative(), true);
+		assert_eq!(d.part_of_hours(), -1);
+		assert_eq!(d.part_of_minutes(), -23);
+		assert_eq!(d.part_of_seconds(), -45);
+		assert_eq!(d.part_of_milliseconds(), -678);
+		assert_eq!(d.part_of_microseconds(), -901);
+		assert_eq!(d.part_of_nanoseconds(), -234);
+		assert_eq!(d.part_of_hours_abs(), 1);
+		assert_eq!(d.part_of_minutes_abs(), 23);
+		assert_eq!(d.part_of_seconds_abs(), 45);
+		assert_eq!(d.part_of_milliseconds_abs(), 678);
+		assert_eq!(d.part_of_microseconds_abs(), 901);
+		assert_eq!(d.part_of_nanoseconds_abs(), 234);
+		assert_eq!(&d.fmt_hh(), "-01");
+		assert_eq!(&d.fmt_mm(), "-23");
+		assert_eq!(&d.fmt_ss(), "-45");
+		assert_eq!(&d.fmt_xxx(), "-678");
+		assert_eq!(&d.mss(), "-23:45");
+		assert_eq!(&d.mmss(), "-23:45");
+		assert_eq!(&d.hmmss(), "-1:23:45");
+		assert_eq!(&d.hhmmss(), "-01:23:45");
+		assert_eq!(&d.mssxxx(), "-23:45.678");
+		assert_eq!(&d.mmssxxx(), "-23:45.678");
+		assert_eq!(&d.hmmssxxx(), "-1:23:45.678");
+		assert_eq!(&d.hhmmssxxx(), "-01:23:45.678");
+		assert_eq!(&d.unsigned_hh(), "01");
+		assert_eq!(&d.unsigned_mm(), "23");
+		assert_eq!(&d.unsigned_ss(), "45");
+		assert_eq!(&d.unsigned_xxx(), "678");
+		assert_eq!(&d.unsigned_mss(), "23:45");
+		assert_eq!(&d.unsigned_mmss(), "23:45");
+		assert_eq!(&d.unsigned_hmmss(), "1:23:45");
+		assert_eq!(&d.unsigned_hhmmss(), "01:23:45");
+		assert_eq!(&d.unsigned_mssxxx(), "23:45.678");
+		assert_eq!(&d.unsigned_mmssxxx(), "23:45.678");
+		assert_eq!(&d.unsigned_hmmssxxx(), "1:23:45.678");
+		assert_eq!(&d.unsigned_hhmmssxxx(), "01:23:45.678");
+		assert!((d.fract_of_secs_abs() - 0.678901234).abs() < 0.000000001);
+		assert!((d.fract_of_secs() - (-0.678901234)).abs() < 0.000000001);
+		assert_eq!(&d.fmt_fract(FractPartOfDuration::Nanoseconds), "678901234");
 		assert_eq!(
-			&minus_one_hour.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
-			"23:45.678"
-		);
-		assert_eq!(&minus_one_hour.unsigned_mss(), "23:45");
-		assert_eq!(&minus_one_hour.unsigned_mssxxx(), "23:45.678");
-		assert_eq!(
-			&minus_one_hour.unsigned_mss_and_fract(FractPartOfDuration::Milliseconds),
-			"23:45.678"
-		);
-		assert_eq!(&minus_one_hour.unsigned_hhmmss(), "01:23:45");
-		assert_eq!(&minus_one_hour.unsigned_hhmmssxxx(), "01:23:45.678");
-		assert_eq!(
-			&minus_one_hour.unsigned_hhmmss_and_fract(FractPartOfDuration::Milliseconds),
-			"01:23:45.678"
-		);
-		assert_eq!(&minus_one_hour.unsigned_hmmss(), "1:23:45");
-		assert_eq!(&minus_one_hour.unsigned_hmmssxxx(), "1:23:45.678");
-		assert_eq!(
-			&minus_one_hour.unsigned_hmmss_and_fract(FractPartOfDuration::Milliseconds),
-			"1:23:45.678"
-		);
-		assert_eq!(&minus_one_hour.mmss(), "-23:45");
-		assert_eq!(&minus_one_hour.mmssxxx(), "-23:45.678");
-		assert_eq!(
-			&minus_one_hour.mmss_and_fract(FractPartOfDuration::Milliseconds),
+			&d.mss_and_fract(FractPartOfDuration::Milliseconds),
 			"-23:45.678"
 		);
-		assert_eq!(&minus_one_hour.mss(), "-23:45");
-		assert_eq!(&minus_one_hour.mssxxx(), "-23:45.678");
 		assert_eq!(
-			&minus_one_hour.mss_and_fract(FractPartOfDuration::Milliseconds),
+			&d.mmss_and_fract(FractPartOfDuration::Milliseconds),
 			"-23:45.678"
 		);
-		assert_eq!(&minus_one_hour.hhmmss(), "-01:23:45");
-		assert_eq!(&minus_one_hour.hhmmssxxx(), "-01:23:45.678");
 		assert_eq!(
-			&minus_one_hour.hhmmss_and_fract(FractPartOfDuration::Milliseconds),
-			"-01:23:45.678"
-		);
-		assert_eq!(&minus_one_hour.hmmss(), "-1:23:45");
-		assert_eq!(&minus_one_hour.hmmssxxx(), "-1:23:45.678");
-		assert_eq!(
-			&minus_one_hour.hmmss_and_fract(FractPartOfDuration::Milliseconds),
+			&d.hmmss_and_fract(FractPartOfDuration::Milliseconds),
 			"-1:23:45.678"
 		);
-		assert_eq!(&minus_one_hour.smart_hhmmss(), "about -1:23:45.678");
-		assert!((minus_one_hour.fract_of_secs_abs() - 0.678901234).abs() < 0.000000001);
-		assert!((minus_one_hour.fract_of_secs() - (-0.678901234)).abs() < 0.000000001);
 		assert_eq!(
-			&minus_one_hour.fmt_fract(FractPartOfDuration::Nanoseconds),
-			"678901234"
+			&d.hhmmss_and_fract(FractPartOfDuration::Milliseconds),
+			"-01:23:45.678"
+		);
+		assert_eq!(
+			&d.unsigned_mss_and_fract(FractPartOfDuration::Milliseconds),
+			"23:45.678"
+		);
+		assert_eq!(
+			&d.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
+			"23:45.678"
+		);
+		assert_eq!(
+			&d.unsigned_hmmss_and_fract(FractPartOfDuration::Milliseconds),
+			"1:23:45.678"
+		);
+		assert_eq!(
+			&d.unsigned_hhmmss_and_fract(FractPartOfDuration::Milliseconds),
+			"01:23:45.678"
 		);
 	}
 }
