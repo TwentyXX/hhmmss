@@ -266,6 +266,28 @@ pub trait Hhmmss {
 		self.fmt_smart()
 	}
 
+	/// Formats the duration in a smart way, choosing the most appropriate format based on the duration value.
+	/// 
+	/// The output format is determined by the following rules:
+	/// - For zero duration: "0"
+	/// - For seconds only: "Xs" (where X is the number of seconds)
+	/// - For minutes and seconds: "M:SS" format
+	/// - For hours, minutes and seconds: "H:MM:SS" format
+	/// 
+	/// If milliseconds are present:
+	/// - For seconds only: "X.xxxs" format
+	/// - For minutes: "M:SS.xxx" format
+	/// - For hours: "H:MM:SS.xxx" format
+	/// 
+	/// If the fractional part is not exact in milliseconds, the output is prefixed with "about ".
+	/// 
+	/// # Examples
+	/// - "0" for zero duration
+	/// - "5s" for 5 seconds
+	/// - "1:23" for 1 minute 23 seconds
+	/// - "2:34:56" for 2 hours 34 minutes 56 seconds
+	/// - "1.234s" for 1.234 seconds
+	/// - "about 1.2345s" for 1.2345 seconds
 	fn fmt_smart(&self) -> String {
 		let mut value = if self.part_of_milliseconds() == 0 {
 			if self.part_of_hours() == 0 {
