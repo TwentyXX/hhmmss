@@ -105,6 +105,9 @@ pub trait Hhmmss {
 		)
 	}
 
+	/// Formats the absolute value of the duration as "MM:SS" with fractional seconds.
+	/// The output is in the format "MM:SS.xxx", "MM:SS.xxxxxx", or "MM:SS.xxxxxxxxx"
+	/// depending on the specified fractional part.
 	fn unsigned_mmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
 			"{}:{}.{}",
@@ -129,6 +132,9 @@ pub trait Hhmmss {
 		)
 	}
 
+	/// Formats the absolute value of the duration as "M:SS" with fractional seconds.
+	/// The output is in the format "M:SS.xxx", "M:SS.xxxxxx", or "M:SS.xxxxxxxxx"
+	/// depending on the specified fractional part.
 	fn unsigned_mss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
 			"{}:{}.{}",
@@ -160,6 +166,9 @@ pub trait Hhmmss {
 		)
 	}
 
+	/// Formats the absolute value of the duration as "HH:MM:SS" with fractional seconds.
+	/// The output is in the format "HH:MM:SS.xxx", "HH:MM:SS.xxxxxx", or "HH:MM:SS.xxxxxxxxx"
+	/// depending on the specified fractional part.
 	fn unsigned_hhmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
 			"{}:{}:{}.{}",
@@ -191,6 +200,9 @@ pub trait Hhmmss {
 		)
 	}
 
+	/// Formats the absolute value of the duration as "H:MM:SS" with fractional seconds.
+	/// The output is in the format "H:MM:SS.xxx", "H:MM:SS.xxxxxx", or "H:MM:SS.xxxxxxxxx"
+	/// depending on the specified fractional part.
 	fn unsigned_hmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
 			"{}:{}:{}.{}",
@@ -206,6 +218,9 @@ pub trait Hhmmss {
 	/// Formats the duration as "MM:SS.xxx" with a sign.
 	/// The output is in the format "-MM:SS.xxx" or "MM:SS.xxx".
 	fn mmssxxx(&self) -> String { self.get_sign() + &self.unsigned_mmssxxx() }
+	/// Formats the duration as "MM:SS" with fractional seconds and a sign.
+	/// The output is in the format "-MM:SS.xxx", "-MM:SS.xxxxxx", or "-MM:SS.xxxxxxxxx"
+	/// (or without "-" for positive durations) depending on the specified fractional part.
 	fn mmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_mmss_and_fract(included)
 	}
@@ -215,6 +230,9 @@ pub trait Hhmmss {
 	/// Formats the duration as "M:SS.xxx" with a sign.
 	/// The output is in the format "-M:SS.xxx" or "M:SS.xxx".
 	fn mssxxx(&self) -> String { self.get_sign() + &self.unsigned_mssxxx() }
+	/// Formats the duration as "M:SS" with fractional seconds and a sign.
+	/// The output is in the format "-M:SS.xxx", "-M:SS.xxxxxx", or "-M:SS.xxxxxxxxx"
+	/// (or without "-" for positive durations) depending on the specified fractional part.
 	fn mss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_mss_and_fract(included)
 	}
@@ -224,6 +242,9 @@ pub trait Hhmmss {
 	/// Formats the duration as "HH:MM:SS.xxx" with a sign.
 	/// The output is in the format "-HH:MM:SS.xxx" or "HH:MM:SS.xxx".
 	fn hhmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hhmmssxxx() }
+	/// Formats the duration as "HH:MM:SS" with fractional seconds and a sign.
+	/// The output is in the format "-HH:MM:SS.xxx", "-HH:MM:SS.xxxxxx", or "-HH:MM:SS.xxxxxxxxx"
+	/// (or without "-" for positive durations) depending on the specified fractional part.
 	fn hhmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_hhmmss_and_fract(included)
 	}
@@ -233,6 +254,9 @@ pub trait Hhmmss {
 	/// Formats the duration as "H:MM:SS.xxx" with a sign.
 	/// The output is in the format "-H:MM:SS.xxx" or "H:MM:SS.xxx".
 	fn hmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hmmssxxx() }
+	/// Formats the duration as "H:MM:SS" with fractional seconds and a sign.
+	/// The output is in the format "-H:MM:SS.xxx", "-H:MM:SS.xxxxxx", or "-H:MM:SS.xxxxxxxxx"
+	/// (or without "-" for positive durations) depending on the specified fractional part.
 	fn hmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_hmmss_and_fract(included)
 	}
