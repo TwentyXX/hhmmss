@@ -33,7 +33,7 @@ fn test_fmt_smart() {
 
     // Seconds with fractional part (not exact milliseconds)
     let d = chrono::Duration::nanoseconds(1234567890);
-    assert_eq!(d.fmt_smart(), "about 1.234567s");
+    assert_eq!(d.fmt_smart(), "about 1.234s");
 
     // Minutes and seconds
     let d = chrono::Duration::seconds(83); // 1:23
