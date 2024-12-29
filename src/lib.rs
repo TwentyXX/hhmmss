@@ -217,12 +217,15 @@ pub trait Hhmmss {
 			self.hmmss()
 		}
 	}
-	fn fraction_of_seconds(&self) -> f64 {
+	fn fraction_of_seconds_abs(&self) -> f64 {
 		((self.part_of_nanoseconds_abs() as f64 / Self::NANOSECONDS_IN_A_MICROSECOND as f64
 			+ self.part_of_microseconds_abs() as f64)
 			/ Self::MICROSECONDS_IN_A_MILLISECOND as f64
 			+ self.part_of_milliseconds_abs() as f64)
 			/ Self::MILLISECONDS_IN_A_SECOND as f64
+	}
+	fn fraction_of_seconds(&self) -> f64 {
+		self.fraction_of_seconds_abs()
 			* if self.is_negative() {
 				-1.0
 			} else {
