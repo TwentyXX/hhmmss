@@ -183,39 +183,45 @@ pub trait Hhmmss {
 	/// The output is in the format "-H:MM:SS.xxx" or "H:MM:SS.xxx".
 	fn hmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hmmssxxx() }
 	fn smart_hhmmss(&self) -> String {
-		if self.part_of_hours() == 0 {
-			if self.part_of_minutes() == 0 {
-				if self.part_of_milliseconds() == 0 {
+		let mut value = if self.part_of_milliseconds() == 0 {
+			if self.part_of_hours() == 0 {
+				if self.part_of_minutes() == 0 {
 					if self.part_of_seconds() == 0 {
-						if self.part_of_microseconds() == 0 && self.part_of_nanoseconds() == 0 {
-							"0".to_owned()
-						} else {
-							"about 0".to_owned()
-						}
+						"0".to_owned()
 					} else {
 						format!("{}s", self.part_of_seconds())
 					}
 				} else {
-					if self.part_of_microseconds() == 0 && self.part_of_nanoseconds() == 0 {
-						format!(
-							"{}.{:02}s",
-							self.part_of_seconds(),
-							self.part_of_milliseconds_abs()
-						)
-					} else {
-						format!(
-							"about {}.{:02}s",
-							self.part_of_seconds(),
-							self.part_of_milliseconds_abs()
-						)
-					}
+					self.mss()
 				}
 			} else {
-				self.mss()
+				self.hmmss()
 			}
 		} else {
-			self.hmmss()
-		}
+			if self.part_of_hours() == 0 {
+				if self.part_of_minutes() == 0 {
+					format!(
+						"{:.3}s",
+						self.part_of_seconds() as f64 + self.fraction_of_seconds_abs()
+					)
+				} else {
+					self.mssxxx()
+				}
+			} else {
+				self.hmmssxxx()
+			}
+		};
+
+		value.insert_str(
+			0,
+			if (self.fraction_of_seconds() * 1_000.0).fract() == 0.0 {
+				""
+			} else {
+				"about "
+			},
+		);
+
+		value
 	}
 	fn fraction_of_seconds_abs(&self) -> f64 {
 		((self.part_of_nanoseconds_abs() as f64 / Self::NANOSECONDS_IN_A_MICROSECOND as f64
