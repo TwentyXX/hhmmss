@@ -1,4 +1,4 @@
-use crate::Hhmmss;
+use crate::{fract, Hhmmss};
 
 #[test]
 fn test_all_crate_durations() {
@@ -84,7 +84,6 @@ fn test_all_features_old() {
 
 		// Test fract_of_secs_abs with high precision comparison
 		assert!((minus_one_hour.fract_of_secs_abs() - 0.678901234).abs() < 0.000000001);
-
 	}
 }
 #[test]
@@ -169,7 +168,10 @@ fn test_all_features() {
 		assert_eq!(&minus_one_hour.smart_hhmmss(), "about -1:23:45.678");
 		assert!((minus_one_hour.fract_of_secs_abs() - 0.678901234).abs() < 0.000000001);
 		assert!((minus_one_hour.fract_of_secs() - (-0.678901234)).abs() < 0.000000001);
-		assert_eq!(&minus_one_hour.fmt_fract(), "-0.678901234");
+		assert_eq!(
+			&minus_one_hour.fmt_fract(fract::FractPartOfDuration::Nanoseconds),
+			"678901234"
+		);
 	}
 }
 #[test]
@@ -267,52 +269,51 @@ fn test_fraction_of_seconds() {
 	);
 }
 
+#[test]
+fn test_unsigned_mmss_and_fract() {
+	use crate::FractPartOfDuration;
+	let duration = chrono::Duration::seconds((1 * 60 + 23) * 60 + 45)
+		+ chrono::Duration::nanoseconds(678_901_234);
+	test(duration);
+	let duration = time::Duration::new((1 * 60 + 23) * 60 + 45, 678_901_234);
+	test(duration);
+	let duration = std::time::Duration::new((1 * 60 + 23) * 60 + 45, 678_901_234);
+	test(duration);
 
-	#[test]
-	fn test_unsigned_mmss_and_fract() {
-		use crate::FractPartOfDuration;
-		let duration = chrono::Duration::seconds((1 * 60 + 23) * 60 + 45)
-			+ chrono::Duration::nanoseconds(678_901_234);
-		test(duration);
-		let duration = time::Duration::new((1 * 60 + 23) * 60 + 45, 678_901_234);
-		test(duration);
-		let duration = std::time::Duration::new((1 * 60 + 23) * 60 + 45, 678_901_234);
-		test(duration);
-
-		fn test<T: Hhmmss>(duration: T) {
-			assert_eq!(
-				duration.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
-				"23:45.678"
-			);
-			assert_eq!(
-				duration.unsigned_mmss_and_fract(FractPartOfDuration::Microseconds),
-				"23:45.678901"
-			);
-			assert_eq!(
-				duration.unsigned_mmss_and_fract(FractPartOfDuration::Nanoseconds),
-				"23:45.678901234"
-			);
-		}
-
-		// Test negative duration
-		let duration = chrono::Duration::seconds(-((1 * 60 + 23) * 60 + 45))
-			+ chrono::Duration::nanoseconds(-678_901_234);
-		test2(duration);
-		let duration = time::Duration::new(-((1 * 60 + 23) * 60 + 45), -678_901_234);
-		test2(duration);
-
-		fn test2<T: Hhmmss>(duration: T) {
-			assert_eq!(
-				duration.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
-				"23:45.678"
-			);
-			assert_eq!(
-				duration.unsigned_mmss_and_fract(FractPartOfDuration::Microseconds),
-				"23:45.678901"
-			);
-			assert_eq!(
-				duration.unsigned_mmss_and_fract(FractPartOfDuration::Nanoseconds),
-				"23:45.678901234"
-			);
-		}
+	fn test<T: Hhmmss>(duration: T) {
+		assert_eq!(
+			duration.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
+			"23:45.678"
+		);
+		assert_eq!(
+			duration.unsigned_mmss_and_fract(FractPartOfDuration::Microseconds),
+			"23:45.678901"
+		);
+		assert_eq!(
+			duration.unsigned_mmss_and_fract(FractPartOfDuration::Nanoseconds),
+			"23:45.678901234"
+		);
 	}
+
+	// Test negative duration
+	let duration = chrono::Duration::seconds(-((1 * 60 + 23) * 60 + 45))
+		+ chrono::Duration::nanoseconds(-678_901_234);
+	test2(duration);
+	let duration = time::Duration::new(-((1 * 60 + 23) * 60 + 45), -678_901_234);
+	test2(duration);
+
+	fn test2<T: Hhmmss>(duration: T) {
+		assert_eq!(
+			duration.unsigned_mmss_and_fract(FractPartOfDuration::Milliseconds),
+			"23:45.678"
+		);
+		assert_eq!(
+			duration.unsigned_mmss_and_fract(FractPartOfDuration::Microseconds),
+			"23:45.678901"
+		);
+		assert_eq!(
+			duration.unsigned_mmss_and_fract(FractPartOfDuration::Nanoseconds),
+			"23:45.678901234"
+		);
+	}
+}
