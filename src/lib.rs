@@ -260,7 +260,13 @@ pub trait Hhmmss {
 	fn hmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_hmmss_and_fract(included)
 	}
+	
+	#[deprecated(since = "0.1.4", note = "Please use `fmt_smart` instead")]
 	fn smart_hhmmss(&self) -> String {
+		self.fmt_smart()
+	}
+
+	fn fmt_smart(&self) -> String {
 		let mut value = if self.part_of_milliseconds() == 0 {
 			if self.part_of_hours() == 0 {
 				if self.part_of_minutes() == 0 {
