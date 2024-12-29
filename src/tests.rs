@@ -7,6 +7,8 @@ fn test_all_crate_durations() {
 	assert_eq!(&std_duration.unsigned_hhmmssxxx(), "01:23:45.678");
 	assert_eq!(&std_duration.unsigned_mmss(), "23:45");
 	assert_eq!(&std_duration.unsigned_mmssxxx(), "23:45.678");
+	assert_eq!(&std_duration.unsigned_mss(), "23:45");
+	assert_eq!(&std_duration.unsigned_mssxxx(), "23:45.678");
 	assert_eq!(&std_duration.unsigned_hmmss(), "1:23:45");
 	assert_eq!(&std_duration.unsigned_hmmssxxx(), "1:23:45.678");
 	let chrono_duration = chrono::Duration::from_std(std_duration).unwrap();
