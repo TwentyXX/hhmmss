@@ -8,8 +8,14 @@ description = "Format time and duration in chrono, std::time and time as HH:MM:S
 repository = "https://github.com/TwentyXX/hhmmss"
 readme = "README.md"
 documentation = "https://docs.rs/hhmmss_rs"
-keywords = ["time", "duration", "chrono", "std::time", "format", "debug", "HH:MM:SS", "HH:MM:SS.xxx", "hhmmss", "hhmmss_rs"]
-categories = ["time", "date-and-time"]
+keywords = ["time", "duration", "format", "HHMMSS", "hhmmss_rs"]
+categories = [
+	"date-and-time",
+	"development-tools",
+	"development-tools::debugging",
+	"development-tools::profiling",
+	"value-formatting",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
