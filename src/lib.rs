@@ -1,6 +1,7 @@
 use fract::FractPartOfDuration;
 
 pub mod fract;
+#[cfg(test)] mod tests;
 pub trait Hhmmss {
 	const NANOSECONDS_IN_A_MICROSECOND: u64 = 1_000;
 	const MICROSECONDS_IN_A_MILLISECOND: u64 = 1_000;
@@ -106,11 +107,14 @@ pub trait Hhmmss {
 
 	fn unsigned_mmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
-			"{}:{}.{}",
+			"{}:{}{}",
 			self.unsigned_mm(),
 			self.unsigned_ss(),
-			(self.fraction_of_seconds_abs() * included.units_per_sec() as f64).round()
-				/ included.units_per_sec() as f64
+			((self.fraction_of_seconds_abs() * included.units_per_sec() as f64).floor()
+				/ included.units_per_sec() as f64)
+				.fract()
+				.to_string()
+				.trim_start_matches('0')
 		)
 	}
 	/// Formats the absolute value of the duration as "M:SS".
@@ -228,7 +232,7 @@ pub trait Hhmmss {
 					format!(
 						"{}s",
 						self.part_of_seconds() as f64
-							+ (self.fraction_of_seconds() * 1_000.0).round() / 1_000.0
+							+ (self.fraction_of_seconds() * 1_000.0).floor() / 1_000.0
 					)
 				} else {
 					self.mssxxx()
@@ -393,5 +397,3 @@ impl Hhmmss for time::Duration {
 
 	fn is_negative(&self) -> bool { self.whole_seconds() < 0 }
 }
-
-#[cfg(test)] mod tests;
