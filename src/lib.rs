@@ -9,7 +9,7 @@ pub trait Hhmmss {
 	const SECONDS_IN_A_MINUTE: u64 = 60;
 	const MINUTES_IN_AN_HOUR: u64 = 60;
 
-	const HOUR_IN_SECONDS: u64 = Self::SECONDS_IN_A_MINUTE * Self::MINUTES_IN_AN_HOUR;
+	const SECONDS_IN_A_HOUR: u64 = Self::SECONDS_IN_A_MINUTE * Self::MINUTES_IN_AN_HOUR;
 	const NANOSECONDS_IN_A_SECOND: u64 = Self::NANOSECONDS_IN_A_MICROSECOND
 		* Self::MICROSECONDS_IN_A_MILLISECOND
 		* Self::MILLISECONDS_IN_A_SECOND;
@@ -371,7 +371,7 @@ impl Hhmmss for chrono::Duration {
 }
 
 impl Hhmmss for std::time::Duration {
-	fn part_of_hours(&self) -> i64 { (self.as_secs() / Self::HOUR_IN_SECONDS) as i64 }
+	fn part_of_hours(&self) -> i64 { (self.as_secs() / Self::SECONDS_IN_A_HOUR) as i64 }
 
 	fn part_of_minutes(&self) -> i64 {
 		((self.as_secs() / Self::SECONDS_IN_A_MINUTE) % Self::MINUTES_IN_AN_HOUR) as i64
@@ -389,7 +389,7 @@ impl Hhmmss for std::time::Duration {
 		(self.subsec_nanos() % Self::NANOSECONDS_IN_A_MICROSECOND as u32) as i64
 	}
 
-	fn part_of_hours_abs(&self) -> u64 { self.as_secs() / Self::HOUR_IN_SECONDS }
+	fn part_of_hours_abs(&self) -> u64 { self.as_secs() / Self::SECONDS_IN_A_HOUR }
 
 	fn part_of_minutes_abs(&self) -> u64 {
 		(self.as_secs() / Self::SECONDS_IN_A_MINUTE) % Self::MINUTES_IN_AN_HOUR
