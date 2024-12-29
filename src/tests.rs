@@ -18,7 +18,7 @@ fn test_all_crate_durations() {
 }
 
 #[test]
-fn test_all_features() {
+fn test_all_features_old() {
 	let minus_one_hour = chrono::Duration::seconds(-((1 * 60 + 23) * 60 + 45))
 		+ chrono::Duration::nanoseconds(-678_901_234);
 	test(minus_one_hour);
@@ -43,6 +43,7 @@ fn test_all_features() {
 		assert_eq!(&minus_one_hour.fmt_hh(), "-01");
 		assert_eq!(&minus_one_hour.fmt_mm(), "-23");
 		assert_eq!(&minus_one_hour.fmt_ss(), "-45");
+		assert_eq!(&minus_one_hour.fmt_xxx(), "-678");
 		assert_eq!(&minus_one_hour.mss(), "-23:45");
 		assert_eq!(&minus_one_hour.mmss(), "-23:45");
 		assert_eq!(&minus_one_hour.hmmss(), "-1:23:45");
@@ -54,6 +55,7 @@ fn test_all_features() {
 		assert_eq!(&minus_one_hour.unsigned_hh(), "01");
 		assert_eq!(&minus_one_hour.unsigned_mm(), "23");
 		assert_eq!(&minus_one_hour.unsigned_ss(), "45");
+		assert_eq!(&minus_one_hour.unsigned_xxx(), "678");
 		assert_eq!(&minus_one_hour.unsigned_mss(), "23:45");
 		assert_eq!(&minus_one_hour.unsigned_mmss(), "23:45");
 		assert_eq!(&minus_one_hour.unsigned_hmmss(), "1:23:45");
@@ -62,13 +64,6 @@ fn test_all_features() {
 		assert_eq!(&minus_one_hour.unsigned_mmssxxx(), "23:45.678");
 		assert_eq!(&minus_one_hour.unsigned_hmmssxxx(), "1:23:45.678");
 		assert_eq!(&minus_one_hour.unsigned_hhmmssxxx(), "01:23:45.678");
-		assert_eq!(&minus_one_hour.unsigned_xxx(), "678");
-		assert_eq!(&minus_one_hour.unsigned_mssxxx(), "23:45.678");
-		assert_eq!(&minus_one_hour.fmt_xxx(), "-678");
-		assert_eq!(&minus_one_hour.fmt_mssxxx(), "-23:45.678");
-		assert_eq!(&minus_one_hour.fmt_mmssxxx(), "-23:45.678");
-		assert_eq!(&minus_one_hour.fmt_hmmssxxx(), "-1:23:45.678");
-		assert_eq!(&minus_one_hour.fmt_hhmmssxxx(), "-01:23:45.678");
 
 		// Test unsigned_mmss_and_fract with all variants
 		assert_eq!(
@@ -90,7 +85,67 @@ fn test_all_features() {
 		// Test fract_of_secs_abs with high precision comparison
 		assert!((minus_one_hour.fract_of_secs_abs() - 0.678901234).abs() < 0.000000001);
 
-		assert_eq!(&minus_one_hour.get_sign(), "-");
+	}
+}
+#[test]
+fn test_all_features() {
+	let minus_one_hour = chrono::Duration::seconds(-((1 * 60 + 23) * 60 + 45))
+		+ chrono::Duration::nanoseconds(-678_901_234);
+	test(minus_one_hour);
+	let minus_one_hour = time::Duration::new(-((1 * 60 + 23) * 60 + 45), -678_901_234);
+	test(minus_one_hour);
+
+	fn test<T: Hhmmss>(minus_one_hour: T) {
+		assert_eq!(minus_one_hour.get_sign(), todo!());
+		assert_eq!(minus_one_hour.is_negative(), todo!());
+		assert_eq!(minus_one_hour.part_of_hours_abs(), todo!());
+		assert_eq!(minus_one_hour.part_of_minutes_abs(), todo!());
+		assert_eq!(minus_one_hour.part_of_seconds_abs(), todo!());
+		assert_eq!(minus_one_hour.part_of_milliseconds_abs(), todo!());
+		assert_eq!(minus_one_hour.part_of_microseconds_abs(), todo!());
+		assert_eq!(minus_one_hour.part_of_nanoseconds_abs(), todo!());
+		assert_eq!(minus_one_hour.part_of_hours(), todo!());
+		assert_eq!(minus_one_hour.part_of_minutes(), todo!());
+		assert_eq!(minus_one_hour.part_of_seconds(), todo!());
+		assert_eq!(minus_one_hour.part_of_milliseconds(), todo!());
+		assert_eq!(minus_one_hour.part_of_microseconds(), todo!());
+		assert_eq!(minus_one_hour.part_of_nanoseconds(), todo!());
+		assert_eq!(minus_one_hour.unsigned_hh(), todo!());
+		assert_eq!(minus_one_hour.unsigned_mm(), todo!());
+		assert_eq!(minus_one_hour.unsigned_ss(), todo!());
+		assert_eq!(minus_one_hour.unsigned_xxx(), todo!());
+		assert_eq!(minus_one_hour.fmt_hh(), todo!());
+		assert_eq!(minus_one_hour.fmt_mm(), todo!());
+		assert_eq!(minus_one_hour.fmt_ss(), todo!());
+		assert_eq!(minus_one_hour.fmt_xxx(), todo!());
+		assert_eq!(minus_one_hour.unsigned_mmss(), todo!());
+		assert_eq!(minus_one_hour.unsigned_mmssxxx(), todo!());
+		assert_eq!(minus_one_hour.unsigned_mmss_and_fract(), todo!());
+		assert_eq!(minus_one_hour.unsigned_mss(), todo!());
+		assert_eq!(minus_one_hour.unsigned_mssxxx(), todo!());
+		assert_eq!(minus_one_hour.unsigned_mss_and_fract(), todo!());
+		assert_eq!(minus_one_hour.unsigned_hhmmss(), todo!());
+		assert_eq!(minus_one_hour.unsigned_hhmmssxxx(), todo!());
+		assert_eq!(minus_one_hour.unsigned_hhmmss_and_fract(), todo!());
+		assert_eq!(minus_one_hour.unsigned_hmmss(), todo!());
+		assert_eq!(minus_one_hour.unsigned_hmmssxxx(), todo!());
+		assert_eq!(minus_one_hour.unsigned_hmmss_and_fract(), todo!());
+		assert_eq!(minus_one_hour.mmss(), todo!());
+		assert_eq!(minus_one_hour.mmssxxx(), todo!());
+		assert_eq!(minus_one_hour.mmss_and_fract(), todo!());
+		assert_eq!(minus_one_hour.mss(), todo!());
+		assert_eq!(minus_one_hour.mssxxx(), todo!());
+		assert_eq!(minus_one_hour.mss_and_fract(), todo!());
+		assert_eq!(minus_one_hour.hhmmss(), todo!());
+		assert_eq!(minus_one_hour.hhmmssxxx(), todo!());
+		assert_eq!(minus_one_hour.hhmmss_and_fract(), todo!());
+		assert_eq!(minus_one_hour.hmmss(), todo!());
+		assert_eq!(minus_one_hour.hmmssxxx(), todo!());
+		assert_eq!(minus_one_hour.hmmss_and_fract(), todo!());
+		assert_eq!(minus_one_hour.smart_hhmmss(), todo!());
+		assert_eq!(minus_one_hour.fract_of_secs_abs(), todo!());
+		assert_eq!(minus_one_hour.fract_of_secs(), todo!());
+		assert_eq!(minus_one_hour.fmt_fract(), todo!());
 	}
 }
 #[test]
