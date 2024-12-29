@@ -284,10 +284,10 @@ pub trait Hhmmss {
 							+ (self.fract_of_secs() * 1_000.0).floor() / 1_000.0
 					)
 				} else {
-					self.mssxxx()
+					self.mss_and_fract(FractPartOfDuration::Milliseconds)
 				}
 			} else {
-				self.hmmssxxx()
+				self.hmmss_and_fract(FractPartOfDuration::Milliseconds)
 			}
 		};
 
