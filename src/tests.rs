@@ -63,6 +63,26 @@ fn test_all_features() {
 		assert_eq!(&minus_one_hour.unsigned_hmmssxxx(), "1:23:45.678");
 		assert_eq!(&minus_one_hour.unsigned_hhmmssxxx(), "01:23:45.678");
 
+		// Test unsigned_mmss_and_fract with all variants
+		assert_eq!(
+			&minus_one_hour.unsigned_mmss_and_fract(crate::FractPartOfDuration::Milliseconds),
+			"23:45.678"
+		);
+		assert_eq!(
+			&minus_one_hour.unsigned_mmss_and_fract(crate::FractPartOfDuration::Microseconds),
+			"23:45.678901"
+		);
+		assert_eq!(
+			&minus_one_hour.unsigned_mmss_and_fract(crate::FractPartOfDuration::Nanoseconds),
+			"23:45.678901234"
+		);
+
+		// Test smart_hhmmss for negative duration
+		assert_eq!(&minus_one_hour.smart_hhmmss(), "about -1:23:45.678");
+
+		// Test fract_of_secs_abs with high precision comparison
+		assert!((minus_one_hour.fract_of_secs_abs() - 0.678901234).abs() < 0.000000001);
+
 		assert_eq!(&minus_one_hour.get_sign(), "-");
 	}
 }
