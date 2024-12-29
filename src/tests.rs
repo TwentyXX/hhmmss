@@ -125,11 +125,11 @@ fn test_smart_hhmmss() {
 	assert_eq!(std::time::Duration::new(3661, 0).smart_hhmmss(), "1:01:01");
 	assert_eq!(
 		std::time::Duration::new(0, 100_000_000).smart_hhmmss(),
-		"0.1"
+		"0.1s"
 	);
 	assert_eq!(
 		std::time::Duration::new(0, 1_000_001).smart_hhmmss(),
-		"about 0"
+		"about 0.001s"
 	);
 	assert_eq!(
 		std::time::Duration::new(0, 1_000_000_000).smart_hhmmss(),
@@ -137,11 +137,11 @@ fn test_smart_hhmmss() {
 	);
 	assert_eq!(
 		std::time::Duration::new(0, 1_500_000_000).smart_hhmmss(),
-		"about 1.50s"
+		"1.5s"
 	);
 	assert_eq!(
 		std::time::Duration::new(0, 1_678_901_234).smart_hhmmss(),
-		"about 1.67s"
+		"about 1.678s"
 	);
 }
 
