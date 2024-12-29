@@ -26,7 +26,7 @@ fn test_all_features() {
 	test(minus_one_hour);
 
 	fn test<T: Hhmmss>(d: T) {
-		assert_eq!(&d.smart_hhmmss(), "about -1:23:45.678");
+		assert_eq!(&d.fmt_smart(), "about -1:23:45.678");
 		assert_eq!(d.get_sign(), "-");
 		assert_eq!(d.is_negative(), true);
 		assert_eq!(d.part_of_hours(), -1);
