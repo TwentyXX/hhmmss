@@ -197,9 +197,17 @@ pub trait Hhmmss {
 					}
 				} else {
 					if self.part_of_microseconds() == 0 && self.part_of_nanoseconds() == 0 {
-						format!("{}.{:02}s", self.part_of_seconds(), self.part_of_milliseconds_abs())
+						format!(
+							"{}.{:02}s",
+							self.part_of_seconds(),
+							self.part_of_milliseconds_abs()
+						)
 					} else {
-						format!("about {}.{:02}s", self.part_of_seconds(), self.part_of_milliseconds_abs())
+						format!(
+							"about {}.{:02}s",
+							self.part_of_seconds(),
+							self.part_of_milliseconds_abs()
+						)
 					}
 				}
 			} else {
@@ -208,6 +216,18 @@ pub trait Hhmmss {
 		} else {
 			self.hmmss()
 		}
+	}
+	fn fraction_of_seconds(&self) -> f64 {
+		((self.part_of_nanoseconds_abs() as f64 / Self::NANOSECONDS_IN_A_MICROSECOND as f64
+			+ self.part_of_microseconds_abs() as f64)
+			/ Self::MICROSECONDS_IN_A_MILLISECOND as f64
+			+ self.part_of_milliseconds_abs() as f64)
+			/ Self::MILLISECONDS_IN_A_SECOND as f64
+			* if self.is_negative() {
+				-1.0
+			} else {
+				1.0
+			}
 	}
 }
 
@@ -339,5 +359,4 @@ impl Hhmmss for time::Duration {
 	fn is_negative(&self) -> bool { self.whole_seconds() < 0 }
 }
 
-#[cfg(test)]
-mod tests;
+#[cfg(test)] mod tests;
