@@ -52,7 +52,7 @@ fn test_all_features() {
 	test(minus_one_hour);
 
 	fn test<T: Hhmmss>(d: T) {
-		assert_eq!(&d.smart_hhmmss(), "about -1:23:45.678");
+		assert_eq!(&d.fmt_smart(), "about -1:23:45.678");
 		assert_eq!(d.get_sign(), "-");
 		assert_eq!(d.is_negative(), true);
 		assert_eq!(d.part_of_hours(), -1);
@@ -127,6 +127,58 @@ fn test_all_features() {
 			"01:23:45.678"
 		);
 	}
+}
+```
+
+## `fmt_smart` function
+```rust
+
+#[test]
+fn test_fmt_smart() {
+    // Zero duration
+    let d = chrono::Duration::zero();
+    assert_eq!(d.fmt_smart(), "0");
+
+    // Seconds only (integer)
+    let d = chrono::Duration::seconds(5);
+    assert_eq!(d.fmt_smart(), "5s");
+
+    // Seconds with milliseconds (exact)
+    let d = chrono::Duration::milliseconds(1234);
+    assert_eq!(d.fmt_smart(), "1.234s");
+
+    // Seconds with fractional part (not exact milliseconds)
+    let d = chrono::Duration::nanoseconds(1234567890);
+    assert_eq!(d.fmt_smart(), "about 1.234s");
+
+    // Minutes and seconds
+    let d = chrono::Duration::seconds(83); // 1:23
+    assert_eq!(d.fmt_smart(), "1:23");
+
+    // Minutes and seconds with milliseconds
+    let d = chrono::Duration::seconds(83) + chrono::Duration::milliseconds(456);
+    assert_eq!(d.fmt_smart(), "1:23.456");
+
+    // Hours, minutes and seconds
+    let d = chrono::Duration::seconds(7296); // 2:01:36
+    assert_eq!(d.fmt_smart(), "2:01:36");
+
+    // Hours, minutes, seconds with milliseconds
+    let d = chrono::Duration::seconds(7296) + chrono::Duration::milliseconds(789);
+    assert_eq!(d.fmt_smart(), "2:01:36.789");
+
+    // Negative durations
+    let d = chrono::Duration::seconds(-5);
+    assert_eq!(d.fmt_smart(), "-5s");
+
+    let d = chrono::Duration::milliseconds(-1234);
+    assert_eq!(d.fmt_smart(), "-1.234s");
+
+    let d = chrono::Duration::seconds(-83);
+    assert_eq!(d.fmt_smart(), "-1:23");
+
+    let d = chrono::Duration::seconds(-7296) + chrono::Duration::milliseconds(-789);
+    assert_eq!(d.fmt_smart(), "-2:01:36.789");
 }
 ```
 
