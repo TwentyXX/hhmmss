@@ -62,6 +62,9 @@ fn test_all_features() {
 		assert_eq!(&minus_one_hour.unsigned_mmssxxx(), "23:45.678");
 		assert_eq!(&minus_one_hour.unsigned_hmmssxxx(), "1:23:45.678");
 		assert_eq!(&minus_one_hour.unsigned_hhmmssxxx(), "01:23:45.678");
+		assert_eq!(&minus_one_hour.unsigned_xxx(), "678");
+		assert_eq!(&minus_one_hour.unsigned_mssxxx(), "23:45.678");
+		assert_eq!(&minus_one_hour.fmt_xxx(), "-678");
 
 		// Test unsigned_mmss_and_fract with all variants
 		assert_eq!(
