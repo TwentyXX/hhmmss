@@ -1,6 +1,6 @@
-use fract::FractPartOfDuration;
+use fracts::FractPartOfDuration;
 
-pub mod fract;
+pub mod fracts;
 #[cfg(test)] mod tests;
 pub trait Hhmmss {
 	const NANOSECONDS_IN_A_MICROSECOND: u64 = 1_000;
