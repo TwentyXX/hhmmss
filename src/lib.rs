@@ -201,8 +201,8 @@ pub trait Hhmmss {
 			if self.part_of_hours() == 0 {
 				if self.part_of_minutes() == 0 {
 					format!(
-						"{:.3}s",
-						self.part_of_seconds() as f64 + self.fraction_of_seconds_abs()
+						"{}s",
+						self.part_of_seconds() as f64 + (self.fraction_of_seconds() * 1_000.0).round() / 1_000.0
 					)
 				} else {
 					self.mssxxx()
