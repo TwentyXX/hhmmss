@@ -1,3 +1,6 @@
+use fract::FractPartOfDuration;
+
+pub mod fract;
 pub trait Hhmmss {
 	const NANOSECONDS_IN_A_MICROSECOND: u64 = 1_000;
 	const MICROSECONDS_IN_A_MILLISECOND: u64 = 1_000;
@@ -100,9 +103,15 @@ pub trait Hhmmss {
 			self.unsigned_xxx()
 		)
 	}
-	
-	fn unsigned_mmss_and_ms(&self) -> (String, u64) {
-		unimplemented!()
+
+	fn unsigned_mmss_and_fract(&self, included: FractPartOfDuration) -> String {
+		format!(
+			"{}:{}.{}",
+			self.unsigned_mm(),
+			self.unsigned_ss(),
+			(self.fraction_of_seconds_abs() * included.units_per_sec() as f64).round()
+				/ included.units_per_sec() as f64
+		)
 	}
 	/// Formats the absolute value of the duration as "M:SS".
 	/// The output is in the format "M:SS".
@@ -120,9 +129,7 @@ pub trait Hhmmss {
 		)
 	}
 
-	fn unsigned_mss_and_ms(&self) -> (String, u64) {
-		unimplemented!()
-	}
+	fn unsigned_mss_and_fract(&self, included: FractPartOfDuration) -> String { unimplemented!() }
 	/// Formats the absolute value of the duration as "HH:MM:SS".
 	/// The output is in the format "HH:MM:SS".
 	fn unsigned_hhmmss(&self) -> String {
@@ -146,7 +153,7 @@ pub trait Hhmmss {
 		)
 	}
 
-	fn unsigned_hhmmss_and_ms(&self) -> (String, u64) {
+	fn unsigned_hhmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		unimplemented!()
 	}
 	/// Formats the absolute value of the duration as "H:MM:SS".
@@ -171,45 +178,35 @@ pub trait Hhmmss {
 		)
 	}
 
-	fn unsigned_hmmss_and_ms(&self) -> (String, u64) {
-		unimplemented!()
-	}
+	fn unsigned_hmmss_and_fract(&self, included: FractPartOfDuration) -> String { unimplemented!() }
 	/// Formats the duration as "MM:SS" with a sign.
 	/// The output is in the format "-MM:SS" or "MM:SS".
 	fn mmss(&self) -> String { self.get_sign() + &self.unsigned_mmss() }
 	/// Formats the duration as "MM:SS.xxx" with a sign.
 	/// The output is in the format "-MM:SS.xxx" or "MM:SS.xxx".
 	fn mmssxxx(&self) -> String { self.get_sign() + &self.unsigned_mmssxxx() }
-	fn mmss_and_ms(&self) -> (String, u64) {
-		unimplemented!()
-	}
+	fn mmss_and_fract(&self, included: FractPartOfDuration) -> String { unimplemented!() }
 	/// Formats the duration as "M:SS" with a sign.
 	/// The output is in the format "-M:SS" or "M:SS".
 	fn mss(&self) -> String { self.get_sign() + &self.unsigned_mss() }
 	/// Formats the duration as "M:SS.xxx" with a sign.
 	/// The output is in the format "-M:SS.xxx" or "M:SS.xxx".
 	fn mssxxx(&self) -> String { self.get_sign() + &self.unsigned_mssxxx() }
-	fn mss_and_ms(&self) -> (String, u64) {
-		unimplemented!()
-	}
+	fn mss_and_fract(&self, included: FractPartOfDuration) -> String { unimplemented!() }
 	/// Formats the duration as "HH:MM:SS" with a sign.
 	/// The output is in the format "-HH:MM:SS" or "HH:MM:SS".
 	fn hhmmss(&self) -> String { self.get_sign() + &self.unsigned_hhmmss() }
 	/// Formats the duration as "HH:MM:SS.xxx" with a sign.
 	/// The output is in the format "-HH:MM:SS.xxx" or "HH:MM:SS.xxx".
 	fn hhmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hhmmssxxx() }
-	fn hhmmss_and_ms(&self) -> (String, u64) {
-		unimplemented!()
-	}
+	fn hhmmss_and_fract(&self, included: FractPartOfDuration) -> String { unimplemented!() }
 	/// Formats the duration as "H:MM:SS" with a sign.
 	/// The output is in the format "-H:MM:SS" or "H:MM:SS".
 	fn hmmss(&self) -> String { self.get_sign() + &self.unsigned_hmmss() }
 	/// Formats the duration as "H:MM:SS.xxx" with a sign.
 	/// The output is in the format "-H:MM:SS.xxx" or "H:MM:SS.xxx".
 	fn hmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hmmssxxx() }
-	fn hmmss_and_ms(&self) -> (String, u64) {
-		unimplemented!()
-	}
+	fn hmmss_and_fract(&self, included: FractPartOfDuration) -> String { unimplemented!() }
 	fn smart_hhmmss(&self) -> String {
 		let mut value = if self.part_of_milliseconds() == 0 {
 			if self.part_of_hours() == 0 {
@@ -230,7 +227,8 @@ pub trait Hhmmss {
 				if self.part_of_minutes() == 0 {
 					format!(
 						"{}s",
-						self.part_of_seconds() as f64 + (self.fraction_of_seconds() * 1_000.0).round() / 1_000.0
+						self.part_of_seconds() as f64
+							+ (self.fraction_of_seconds() * 1_000.0).round() / 1_000.0
 					)
 				} else {
 					self.mssxxx()
