@@ -12,4 +12,11 @@ impl FractPartOfDuration {
 			FractPartOfDuration::Nanoseconds => 1_000_000_000,
 		}
 	}
+	pub fn decimal_places(&self) -> usize {
+		match self {
+			FractPartOfDuration::Milliseconds => 3,
+			FractPartOfDuration::Microseconds => 6,
+			FractPartOfDuration::Nanoseconds => 9,
+		}
+	}
 }
