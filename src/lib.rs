@@ -287,7 +287,7 @@ pub trait Hhmmss {
 	/// - "1:23" for 1 minute 23 seconds
 	/// - "2:34:56" for 2 hours 34 minutes 56 seconds
 	/// - "1.234s" for 1.234 seconds
-	/// - "about 1.2345s" for 1.2345 seconds
+	/// - "about 1.234s" for 1.234 seconds
 	fn fmt_smart(&self) -> String {
 		let mut value = if self.part_of_milliseconds() == 0 {
 			if self.part_of_hours() == 0 {
