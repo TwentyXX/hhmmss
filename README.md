@@ -8,11 +8,11 @@ I just wanted to format `chrono::Duration` as `HH:MM:SS` in some of my crates. H
 
 # Usage
 
-Add `hhmmss` to `Cargo.toml`:
+Add `hhmmss_rs` to `Cargo.toml`:
 
 ```toml
 [dependencies]
-hhmmss = "0.1"
+hhmmss_rs = "0.1"
 ```
 
 Then:
