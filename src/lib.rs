@@ -307,9 +307,9 @@ pub trait Hhmmss {
 			if self.part_of_hours() == 0 {
 				if self.part_of_minutes() == 0 {
 					format!(
-						"{}s",
-						self.part_of_seconds() as f64
-							+ (self.fract_of_secs() * 1_000.0).floor() / 1_000.0
+						"{}.{}s",
+						self.part_of_seconds() as f64,
+						self.fmt_fract(FractPartOfDuration::Milliseconds)
 					)
 				} else {
 					self.mss_and_fract(FractPartOfDuration::Milliseconds)
@@ -321,7 +321,7 @@ pub trait Hhmmss {
 
 		value.insert_str(
 			0,
-			if (self.fract_of_secs() * 1_000.0).fract() == 0.0 {
+			if self.part_of_microseconds() == 0 && self.part_of_nanoseconds() == 0 {
 				""
 			} else {
 				"about "
