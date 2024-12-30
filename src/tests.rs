@@ -71,6 +71,13 @@ fn test_fmt_smart() {
 	// assert_eq!(d.fmt_smart(), "2.4050000000000002s");
 	// 0.1.5 or later:
 	assert_eq!(d.fmt_smart(), "2.405s");
+	
+	let d = std::time::Duration::from_secs_f64(2.405000002); // The last 2 are included in nanoseconds.
+	assert_eq!(d.fmt_smart(), "about 2.405s");
+
+	let d = std::time::Duration::from_secs_f64(2.4050000002); // The last 2 are not included in nanoseconds.
+	assert_eq!(d.fmt_smart(), "2.405s");
+
 }
 
 #[test]
