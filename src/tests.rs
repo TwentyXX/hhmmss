@@ -19,58 +19,58 @@ fn test_all_crate_durations() {
 
 #[test]
 fn test_fmt_smart() {
-    // Zero duration
-    let d = chrono::Duration::zero();
-    assert_eq!(d.fmt_smart(), "0");
+	// Zero duration
+	let d = chrono::Duration::zero();
+	assert_eq!(d.fmt_smart(), "0");
 
-    // Seconds only (integer)
-    let d = chrono::Duration::seconds(5);
-    assert_eq!(d.fmt_smart(), "5s");
+	// Seconds only (integer)
+	let d = chrono::Duration::seconds(5);
+	assert_eq!(d.fmt_smart(), "5s");
 
-    // Seconds with milliseconds (exact)
-    let d = chrono::Duration::milliseconds(1234);
-    assert_eq!(d.fmt_smart(), "1.234s");
+	// Seconds with milliseconds (exact)
+	let d = chrono::Duration::milliseconds(1234);
+	assert_eq!(d.fmt_smart(), "1.234s");
 
-    // Seconds with fractional part (not exact milliseconds)
-    let d = chrono::Duration::nanoseconds(1234567890);
-    assert_eq!(d.fmt_smart(), "about 1.234s");
+	// Seconds with fractional part (not exact milliseconds)
+	let d = chrono::Duration::nanoseconds(1234567890);
+	assert_eq!(d.fmt_smart(), "about 1.234s");
 
-    // Minutes and seconds
-    let d = chrono::Duration::seconds(83); // 1:23
-    assert_eq!(d.fmt_smart(), "1:23");
+	// Minutes and seconds
+	let d = chrono::Duration::seconds(83); // 1:23
+	assert_eq!(d.fmt_smart(), "1:23");
 
-    // Minutes and seconds with milliseconds
-    let d = chrono::Duration::seconds(83) + chrono::Duration::milliseconds(456);
-    assert_eq!(d.fmt_smart(), "1:23.456");
+	// Minutes and seconds with milliseconds
+	let d = chrono::Duration::seconds(83) + chrono::Duration::milliseconds(456);
+	assert_eq!(d.fmt_smart(), "1:23.456");
 
-    // Hours, minutes and seconds
-    let d = chrono::Duration::seconds(7296); // 2:01:36
-    assert_eq!(d.fmt_smart(), "2:01:36");
+	// Hours, minutes and seconds
+	let d = chrono::Duration::seconds(7296); // 2:01:36
+	assert_eq!(d.fmt_smart(), "2:01:36");
 
-    // Hours, minutes, seconds with milliseconds
-    let d = chrono::Duration::seconds(7296) + chrono::Duration::milliseconds(789);
-    assert_eq!(d.fmt_smart(), "2:01:36.789");
+	// Hours, minutes, seconds with milliseconds
+	let d = chrono::Duration::seconds(7296) + chrono::Duration::milliseconds(789);
+	assert_eq!(d.fmt_smart(), "2:01:36.789");
 
-    // Negative durations
-    let d = chrono::Duration::seconds(-5);
-    assert_eq!(d.fmt_smart(), "-5s");
+	// Negative durations
+	let d = chrono::Duration::seconds(-5);
+	assert_eq!(d.fmt_smart(), "-5s");
 
-    let d = chrono::Duration::milliseconds(-1234);
-    assert_eq!(d.fmt_smart(), "-1.234s");
+	let d = chrono::Duration::milliseconds(-1234);
+	assert_eq!(d.fmt_smart(), "-1.234s");
 
-    let d = chrono::Duration::seconds(-83);
-    assert_eq!(d.fmt_smart(), "-1:23");
+	let d = chrono::Duration::seconds(-83);
+	assert_eq!(d.fmt_smart(), "-1:23");
 
-    let d = chrono::Duration::seconds(-7296) + chrono::Duration::milliseconds(-789);
-    assert_eq!(d.fmt_smart(), "-2:01:36.789");
+	let d = chrono::Duration::seconds(-7296) + chrono::Duration::milliseconds(-789);
+	assert_eq!(d.fmt_smart(), "-2:01:36.789");
 
-		// This behavior was due to lax handling of floats, which has been corrected since version 0.1.5.
-		let d = chrono::Duration::milliseconds(2405);
-		// As of 0.1.4, this test passed.
-		// assert_eq!(d.fmt_smart(), "2.4050000000000002s");
-		// 0.1.5 or later:
-		assert_eq!(d.fmt_smart(), "2.405s");
-
+	// The following behavior was due to lax handling of floating point numbers and
+	// has been corrected since version 0.1.5.
+	let d = chrono::Duration::milliseconds(2405);
+	// As of 0.1.4, this test passed.
+	// assert_eq!(d.fmt_smart(), "2.4050000000000002s");
+	// 0.1.5 or later:
+	assert_eq!(d.fmt_smart(), "2.405s");
 }
 
 #[test]
