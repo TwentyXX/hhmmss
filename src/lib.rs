@@ -2,7 +2,9 @@ use fracts::FractPartOfDuration;
 
 pub mod fracts;
 #[cfg(test)] mod tests;
-pub trait Hhmmss {
+#[cfg(test)] mod feature_tests;
+
+pub trait Hhmmss: HasSubseconds {
 	const NANOSECONDS_IN_A_MICROSECOND: u64 = 1_000;
 	const MICROSECONDS_IN_A_MILLISECOND: u64 = 1_000;
 	const MILLISECONDS_IN_A_SECOND: u64 = 1_000;
@@ -105,9 +107,9 @@ pub trait Hhmmss {
 		)
 	}
 
-	/// Formats the absolute value of the duration as "MM:SS" with fractional seconds.
-	/// The output is in the format "MM:SS.xxx", "MM:SS.xxxxxx", or "MM:SS.xxxxxxxxx"
-	/// depending on the specified fractional part.
+	/// Formats the absolute value of the duration as "MM:SS" with fractional
+	/// seconds. The output is in the format "MM:SS.xxx", "MM:SS.xxxxxx", or
+	/// "MM:SS.xxxxxxxxx" depending on the specified fractional part.
 	fn unsigned_mmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
 			"{}:{}.{}",
@@ -132,9 +134,9 @@ pub trait Hhmmss {
 		)
 	}
 
-	/// Formats the absolute value of the duration as "M:SS" with fractional seconds.
-	/// The output is in the format "M:SS.xxx", "M:SS.xxxxxx", or "M:SS.xxxxxxxxx"
-	/// depending on the specified fractional part.
+	/// Formats the absolute value of the duration as "M:SS" with fractional
+	/// seconds. The output is in the format "M:SS.xxx", "M:SS.xxxxxx", or
+	/// "M:SS.xxxxxxxxx" depending on the specified fractional part.
 	fn unsigned_mss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
 			"{}:{}.{}",
@@ -166,9 +168,9 @@ pub trait Hhmmss {
 		)
 	}
 
-	/// Formats the absolute value of the duration as "HH:MM:SS" with fractional seconds.
-	/// The output is in the format "HH:MM:SS.xxx", "HH:MM:SS.xxxxxx", or "HH:MM:SS.xxxxxxxxx"
-	/// depending on the specified fractional part.
+	/// Formats the absolute value of the duration as "HH:MM:SS" with fractional
+	/// seconds. The output is in the format "HH:MM:SS.xxx", "HH:MM:SS.xxxxxx",
+	/// or "HH:MM:SS.xxxxxxxxx" depending on the specified fractional part.
 	fn unsigned_hhmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
 			"{}:{}:{}.{}",
@@ -200,9 +202,9 @@ pub trait Hhmmss {
 		)
 	}
 
-	/// Formats the absolute value of the duration as "H:MM:SS" with fractional seconds.
-	/// The output is in the format "H:MM:SS.xxx", "H:MM:SS.xxxxxx", or "H:MM:SS.xxxxxxxxx"
-	/// depending on the specified fractional part.
+	/// Formats the absolute value of the duration as "H:MM:SS" with fractional
+	/// seconds. The output is in the format "H:MM:SS.xxx", "H:MM:SS.xxxxxx",
+	/// or "H:MM:SS.xxxxxxxxx" depending on the specified fractional part.
 	fn unsigned_hmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		format!(
 			"{}:{}:{}.{}",
@@ -219,8 +221,9 @@ pub trait Hhmmss {
 	/// The output is in the format "-MM:SS.xxx" or "MM:SS.xxx".
 	fn mmssxxx(&self) -> String { self.get_sign() + &self.unsigned_mmssxxx() }
 	/// Formats the duration as "MM:SS" with fractional seconds and a sign.
-	/// The output is in the format "-MM:SS.xxx", "-MM:SS.xxxxxx", or "-MM:SS.xxxxxxxxx"
-	/// (or without "-" for positive durations) depending on the specified fractional part.
+	/// The output is in the format "-MM:SS.xxx", "-MM:SS.xxxxxx", or
+	/// "-MM:SS.xxxxxxxxx" (or without "-" for positive durations) depending on
+	/// the specified fractional part.
 	fn mmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_mmss_and_fract(included)
 	}
@@ -231,8 +234,9 @@ pub trait Hhmmss {
 	/// The output is in the format "-M:SS.xxx" or "M:SS.xxx".
 	fn mssxxx(&self) -> String { self.get_sign() + &self.unsigned_mssxxx() }
 	/// Formats the duration as "M:SS" with fractional seconds and a sign.
-	/// The output is in the format "-M:SS.xxx", "-M:SS.xxxxxx", or "-M:SS.xxxxxxxxx"
-	/// (or without "-" for positive durations) depending on the specified fractional part.
+	/// The output is in the format "-M:SS.xxx", "-M:SS.xxxxxx", or
+	/// "-M:SS.xxxxxxxxx" (or without "-" for positive durations) depending on
+	/// the specified fractional part.
 	fn mss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_mss_and_fract(included)
 	}
@@ -243,8 +247,9 @@ pub trait Hhmmss {
 	/// The output is in the format "-HH:MM:SS.xxx" or "HH:MM:SS.xxx".
 	fn hhmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hhmmssxxx() }
 	/// Formats the duration as "HH:MM:SS" with fractional seconds and a sign.
-	/// The output is in the format "-HH:MM:SS.xxx", "-HH:MM:SS.xxxxxx", or "-HH:MM:SS.xxxxxxxxx"
-	/// (or without "-" for positive durations) depending on the specified fractional part.
+	/// The output is in the format "-HH:MM:SS.xxx", "-HH:MM:SS.xxxxxx", or
+	/// "-HH:MM:SS.xxxxxxxxx" (or without "-" for positive durations) depending
+	/// on the specified fractional part.
 	fn hhmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_hhmmss_and_fract(included)
 	}
@@ -255,32 +260,33 @@ pub trait Hhmmss {
 	/// The output is in the format "-H:MM:SS.xxx" or "H:MM:SS.xxx".
 	fn hmmssxxx(&self) -> String { self.get_sign() + &self.unsigned_hmmssxxx() }
 	/// Formats the duration as "H:MM:SS" with fractional seconds and a sign.
-	/// The output is in the format "-H:MM:SS.xxx", "-H:MM:SS.xxxxxx", or "-H:MM:SS.xxxxxxxxx"
-	/// (or without "-" for positive durations) depending on the specified fractional part.
+	/// The output is in the format "-H:MM:SS.xxx", "-H:MM:SS.xxxxxx", or
+	/// "-H:MM:SS.xxxxxxxxx" (or without "-" for positive durations) depending
+	/// on the specified fractional part.
 	fn hmmss_and_fract(&self, included: FractPartOfDuration) -> String {
 		self.get_sign() + &self.unsigned_hmmss_and_fract(included)
 	}
-	
-	#[deprecated(since = "0.1.4", note = "Please use `fmt_smart` instead")]
-	fn smart_hhmmss(&self) -> String {
-		self.fmt_smart()
-	}
 
-	/// Formats the duration in a smart way, choosing the most appropriate format based on the duration value.
-	/// 
+	#[deprecated(since = "0.1.4", note = "Please use `fmt_smart` instead")]
+	fn smart_hhmmss(&self) -> String { self.fmt_smart() }
+
+	/// Formats the duration in a smart way, choosing the most appropriate
+	/// format based on the duration value.
+	///
 	/// The output format is determined by the following rules:
 	/// - For zero duration: "0"
 	/// - For seconds only: "Xs" (where X is the number of seconds)
 	/// - For minutes and seconds: "M:SS" format
 	/// - For hours, minutes and seconds: "H:MM:SS" format
-	/// 
+	///
 	/// If milliseconds are present:
 	/// - For seconds only: "X.xxxs" format
 	/// - For minutes: "M:SS.xxx" format
 	/// - For hours: "H:MM:SS.xxx" format
-	/// 
-	/// If the fractional part is not exact in milliseconds, the output is prefixed with "about ".
-	/// 
+	///
+	/// If the fractional part is not exact in milliseconds, the output is
+	/// prefixed with "about ".
+	///
 	/// # Examples
 	/// - "0" for zero duration
 	/// - "5s" for 5 seconds
@@ -346,12 +352,12 @@ pub trait Hhmmss {
 			}
 	}
 	fn fmt_fract(&self, included: FractPartOfDuration) -> String {
-		((self.fract_of_secs_abs() * included.units_per_sec() as f64).floor()
-			/ included.units_per_sec() as f64)
-			.fract()
-			.to_string()[2..]
-			.to_string()
+		self.fmt_fract_all()
+			.chars()
+			.take(included.decimal_places())
+			.collect()
 	}
+	fn fmt_fract_all(&self) -> String { format!("{:09}", self.unsigned_subsecs()) }
 }
 
 impl Hhmmss for chrono::Duration {
@@ -480,4 +486,27 @@ impl Hhmmss for time::Duration {
 	}
 
 	fn is_negative(&self) -> bool { self.whole_seconds() < 0 }
+}
+
+pub(crate) trait HasSubseconds {
+	fn subsecs(&self) -> i64;
+	fn unsigned_subsecs(&self) -> u64;
+}
+
+impl HasSubseconds for chrono::Duration {
+	fn subsecs(&self) -> i64 { self.num_nanoseconds().unwrap_or(0) % 1_000_000_000 }
+
+	fn unsigned_subsecs(&self) -> u64 { self.subsecs().unsigned_abs() as u64 }
+}
+
+impl HasSubseconds for std::time::Duration {
+	fn subsecs(&self) -> i64 { self.subsec_nanos() as i64 }
+
+	fn unsigned_subsecs(&self) -> u64 { self.subsecs().unsigned_abs() as u64 }
+}
+
+impl HasSubseconds for time::Duration {
+	fn subsecs(&self) -> i64 { self.subsec_nanoseconds() as i64 }
+
+	fn unsigned_subsecs(&self) -> u64 { self.subsecs().unsigned_abs() as u64 }
 }
