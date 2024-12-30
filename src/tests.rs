@@ -66,9 +66,11 @@ fn test_fmt_smart() {
 
 		// This behavior was due to lax handling of floats, which has been corrected since version 0.1.5.
 		let d = chrono::Duration::milliseconds(2405);
-		// Prior to 0.1.4, this test passed.
+		// As of 0.1.4, this test passed.
 		// assert_eq!(d.fmt_smart(), "2.4050000000000002s");
+		// 0.1.5 or later:
 		assert_eq!(d.fmt_smart(), "2.405s");
+
 }
 
 #[test]
